@@ -1,0 +1,89 @@
+
+<link rel="stylesheet"; href="projects/projects.css">
+
+<div style="top: 0; right: 0; left: 0;">
+
+	<section layout="row" flex="">
+
+		<md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
+			<md-toolbar style="background-color: #1b325b">
+				<h1 class="md-toolbar-tools">My Profile</h1>
+			</md-toolbar>
+			<md-content layout-padding ng-controller="LeftCtrl">
+				<md-subheader class="md-sidebar"> Pick a view </md-subheader>
+				<md-list-item class="md-3-line" ng-click="goToBillables()">
+					My Billables
+				</md-list-item>
+				<md-list-item class="md-3-line" ng-click="goToClients()">
+					My Clients
+				</md-list-item>
+				<md-list-item class="md-3-line" ng-click="goToProjects()">
+					My Projects
+				</md-list-item>
+	      	</md-content>
+	    </md-sidenav>
+
+		<!-- <div ng-controller='BillablesCtrl'> -->
+		<div>
+			<md-content layout="row" layout-align="space-around" layout-padding="layout-padding" class="login-form">
+				<!-- <md-card flex="flex" flex-gt-sm="50" flex-gt-md="33"> -->
+				<md-card flex="flex">
+					<md-toolbar ng-controller='SideBarCtrl' style="background-color: #1b325b">
+						<div class="md-toolbar-tools">
+							<label class="label" for="billables">
+								<h3 style="float: left;">Projects</h3>
+								<!-- <input ng-model="searchText" style="padding-right: 0px; "> -->
+							</label>
+							<!-- <md-button ng-click="toggleLeft()" ng-hide="isOpenLeft()" class="md-primary"> -->
+								
+	          				<!-- </md-button> -->
+	          				
+						</div>
+	        		</md-toolbar>
+	        		<md-card-content ng-controller='ProjectsCtrl'>
+	        			<table class="table-striped" id="projectsTable">
+	        				<thead>
+	        					<tr>
+									<th>Project ID</th>
+									<th>Project Name</th>
+									<th>Client</th>
+									<th>Project Start-date</th>
+									<th>Cost</th>
+								</tr>
+	        				</thead>
+							<tbody>
+								<tr ng-repeat="project in projects | filter:searchText" ng-click=editProject(project.id) style="border: none;">
+									<td title="id"  sortable="'id'" style="border: none; height: 40px">{{project.id}}</td>
+								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{project.name}}</td>
+								    <td title="client"  sortable="'client'" style="border: none; height: 40px">{{project.client}}</td>
+								    <td title="start-date"  sortable="'start-date'" style="border: none; height: 40px">{{project.start_date}}</td>
+								    <td title="cost"  sortable="'cost'" style="border: none; height: 40px">
+								    	{{project.cost}}
+								    	<!-- <a ng-click=deleteProject(billable) style="float: right;">
+								    		<span class="glyphicon glyphicon-trash"></span>
+								    	</a> -->
+								    </td>
+								</tr>
+								<tr>
+									<td>1</td>
+									<td>project 1</td>
+									<td>client 1</td>
+									<td>1493679730690</td>
+									<td>50000</td>
+								</tr>
+							</tbody>
+	        			</table>
+	        			<button id="show_project_form">Add project</button>
+	        			<button ng-click="tester()">tester</button>
+	        			<button ng-click="putProject()">Add project</button>
+	        		</md-card-content>
+				</md-card>
+			</md-content>
+			<h3></h3>
+		</div>
+	</section>
+</div>
+
+
+<!-- entry form css -->
+<div id="includedContent"></div>

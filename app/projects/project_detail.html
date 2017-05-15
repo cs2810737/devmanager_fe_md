@@ -1,0 +1,54 @@
+
+
+<div ng-controller='ProjectCtrl'>
+	<h3>Developers</h3>
+
+	<style type="text/css">
+		th {
+		    background: #4D4D4D;
+		    /*text-transform: uppercase;*/
+		    font-family: 'Open Sans Condensed', sans-serif;
+		    color: #797979;
+		    font-size: 18px;
+		    font-weight: 100;
+		    padding: 20px;
+		    margin: -30px -30px 30px -30px;
+		}
+	</style>
+	<table ng-table="developerss" class="table-striped" show-filter="true">
+		<tr>
+		    <th>Name</th>
+		    <th>Hourly Rate</th>
+		    <th>Hours Worked</th>
+		    <th>Total Developer Cost</th>
+	  	</tr>
+	    <tr ng-repeat="developer in developers" style="line-height: 40px">
+	        <td title="'Name'"  sortable="'name'">{{developer.name}}</td>
+	        <td title="'hourly_rate'" >{{developer.hourly_rate}}</td>
+	        <td title='hours_worked'> {{developer.hours_worked}} </td>
+	        <td title='total_dev_cost'> {{developer.cost }} </td>
+	    </tr>
+	</table>
+	<p>Grand total programmer cost</p>
+	<tr>
+	    <td title='grand_total_programmer'><b>{{grand_total_programmer_cost}}</b></td>
+	</tr>
+
+	<h3>Billables</h3>
+
+	<table ng-table="billables" class="table-striped" show-filter="true">
+		<tr>
+		    <th>Name</th>
+		    <th>Cost</th>
+	  	</tr>
+	    <tr ng-repeat="billable in billables" style="line-height: 40px">
+	        <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+	            {{billable.name}}</td>
+	        <td title='cost'> {{billable.cost}} </td>
+	    </tr>
+	</table>
+	<p>Billables Grand total cost</p>
+	<tr>
+	    <td title='grand_total_programmer'><b>{{total_billable_cost}}</b></td>
+	</tr>
+</div>

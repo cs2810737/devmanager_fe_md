@@ -1,0 +1,38 @@
+<div style="top: 0; right: 0; left: 0;">
+	
+	<section layout="row" flex="">
+		<md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
+			<md-toolbar style="background-color: #1b325b">
+				<h1 class="md-toolbar-tools">My Profile</h1>
+			</md-toolbar>
+			<md-content layout-padding ng-controller="LeftCtrl">
+				<md-subheader> Pick a view </md-subheader>
+				<md-list-item class="md-3-line" ng-click="null">
+					Projects
+				</md-list-item>
+				<md-list-item class="md-3-line" ng-click="null">
+					Billables
+				</md-list-item>
+	      	</md-content>
+	    </md-sidenav>
+
+		<!-- <div ng-controller='BillablesCtrl'> -->
+		<div>
+			<md-content layout="row" layout-align="space-around" layout-padding="layout-padding" ng-cloak="ng-cloak" class="login-form">
+				<!-- <md-card flex="flex" flex-gt-sm="50" flex-gt-md="33"> -->
+				<md-card flex="flex">
+	        		<md-card-content ng-controller='BillablesCtrl'>
+	        			Projects
+	        		</md-card-content>
+	        		<md-card-content ng-controller='BillablesCtrl'>
+	        			Billables
+	        		</md-card-content>
+	        		<md-card-content ng-controller='BillablesCtrl'>
+	        			Clients
+	        		</md-card-content>
+				</md-card>
+			</md-content>
+			<h3></h3>
+		</div>
+	</section>
+</div>

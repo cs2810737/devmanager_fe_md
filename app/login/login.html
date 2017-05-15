@@ -1,0 +1,36 @@
+<link rel="stylesheet" type="text/css" href="/login/login.css">
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<div>
+	<md-content ng-controller="LoginCtrl" layout="row" layout-align="space-around" layout-padding="layout-padding" ng-cloak="ng-cloak" class="login-form">
+		<md-card flex='flex' flex-gt-sm="50" flex-gt-md="33">
+			<md-toolbar style="background-color: #1b325b">
+				<div class="md-toolbar-tools">
+					<h2><span>Dev Login</span></h2>
+				</div>
+			</md-toolbar>
+			<md-card-content>
+				<form name="loginForm">
+					<md-input-container class="md-block">
+						<div class="form-group" ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }">
+				            <label for="username">Username</label>
+				            <input type="text" name="username" id="username" class="form-control" ng-model="vm.username" required />
+				            <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+	        			</div>
+					</md-input-container>
+					<md-input-container class="md-block">
+						<div class="form-group" ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }">
+				            <label for="password">Password</label>
+				            <input type="password" name="password" id="password" class="form-control" ng-model="vm.password" required />
+				            <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+				        </div>
+					</md-input-container>
+					<md-button ng-click="login(loginForm)" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary" style="background-color: #b64e26">&nbsp Login &nbsp</md-button>
+				</form>
+			</md-card-content>
+		</md-card>
+	</md-content>
+</div>
