@@ -3,63 +3,36 @@
 angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
 
 .config(['$routeProvider','$stateProvider', function($routeProvider, $stateProvider) {
-    // $routeProvider
-    //     .when('/billables/:username', {
-    //         // templateUrl: 'billables/billables.html',
-    //         templateUrl: 'developers/billables/billables.html',
-    //         controller: 'BillablesCtrl'
-    //     })
-    //     .when('/billable/add/', {
-    //         templateUrl: 'developers/billables/create-billable.html',
-    //         controller: 'BillablesCtrl'
-    //     })
-    // }])
-
 	$stateProvider
 		.state('billables', {
 			// templateUrl: 'billables/billables.html',
-            url: '/billables/:username',
+            // url: '/billables/:username',
+            url: '/billables/',
 			templateUrl: 'developers/billables/billables.html',
 			controller: 'BillablesCtrl'
 		})
-		.state('/billable/add/', {
+		.state('billables.create', {
+            url: 'billables/create/',
 			templateUrl: 'developers/billables/create-billable.html',
-			controller: 'BillablesCtrl'
   		})
 	}])
 
 .controller('BillablesCtrl', ['Billables', 'Credentials', '$http', '$scope', '$location', '$state', function(Billables, Credentials, $http, $scope, $location, $state){
 
-    $('#show_billable_form').on('click', function(){
-        $scope.showBillableForm();
-    })
-
-    $scope.showBillableForm = function (){
-        $('#divOnTop').fadeIn(500);
-    }
-
-    $(function(){
-        $('#includedContent').load('developers/billables/create-billable.html')
-    })
-
-    $(document).ready(function(){
-        $('#billablesTable').DataTable();
-    });
     
-    $scope.tester = function(){
-        console.log('tester works');
+    $http.get("http://localhost:8000/billables/")
+        .then(function(data){
+            Billables.setData(data.billables)
+        })
+    
+    $scope.showBillableForm = function(){
+        console.log('herh')
+        $state.go('create')
     }
 
     $scope.billables = Billables.getData();
 
-    $scope.goToBillables = function(){
-        // $location.path('billables/'+Credentials.getData().username)
-        // $location.path('billables/aloo');
-        $state.go(billables)
-        // setTimeout($state.go(billables), 0)
-        // console.log('this runs')
-        
-    }
+    
 
     $scope.showCreateBillableDialog = function(ev) {
         // Appending dialog to document.body to cover sidenav in docs app

@@ -16,7 +16,7 @@ angular.module('myApp', [
   'ngAnimate',
   'ngAria',
   'ngMessages',
-  // 'ngTable',
+  'ngTable',
 ]).
 config(['$locationProvider', '$urlRouterProvider', '$stateProvider', function($locationProvider, $urlRouterProvider, $stateProvider) {
   $locationProvider.hashPrefix('!');

@@ -8,9 +8,9 @@
 	<section layout="row" flex="">
 
 		<!-- <div ng-controller='BillablesCtrl'> -->
-		<div layout="row" style="margin: 0 auto">
+		<div ng-controller='HomeCtrl' layout="row" style="margin: 0 auto">
 			
-			<div class="demo-card-square mdl-card mdl-shadow--2dp billable" ng-controller='BillablesCtrl' id="#billableTN">
+			<div class="demo-card-square mdl-card mdl-shadow--2dp billable" id="#billableTN">
 					<div class="mdl-card__title mdl-card--expand" ng-click="goToBillables()"
 						style="background: url('../images/kenyan-shilling.jpg') bottom right 15% no-repeat #46B6AC;"></div>
 					<div class="mdl-card__supporting-text">
@@ -18,7 +18,7 @@
 					</div>
 			</div>
 
-			<div class="demo-card-square mdl-card mdl-shadow--2dp client" ng-controller='ClientsCtrl' >
+			<div class="demo-card-square mdl-card mdl-shadow--2dp client">
 					<div class="mdl-card__title mdl-card--expand" ng-click="goToClients()" 
 						style="background: url('../images/cliente.svg') bottom right 15% no-repeat #46B6AC;"></div>
 					<div class="mdl-card__supporting-text">
@@ -26,7 +26,7 @@
 					</div>
 			</div>
 
-			<div class="demo-card-square mdl-card mdl-shadow--2dp project" ng-controller='ProjectsCtrl' id="#projectTN">
+			<div class="demo-card-square mdl-card mdl-shadow--2dp project" id="#projectTN">
 					<div class="mdl-card__title mdl-card--expand" ng-click="goToProjects()" 
 						style="background: url('../images/project.png') bottom right 15% no-repeat #46B6AC;"></div>
 					<div class="mdl-card__supporting-text">

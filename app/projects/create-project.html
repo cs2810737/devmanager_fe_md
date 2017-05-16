@@ -96,21 +96,19 @@
         h.style.height = (h.scrollHeight)+"px";
     }
 
-    $('#cancelProject').click(function(){
-        $('#divOnTop').fadeOut(500)
-    })
 </script>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
-<div id="divOnTop" style="display: none; top: 0; right: 0; left: 0;">
+<!-- <div id="divOnTop" style="display: none; top: 0; right: 0; left: 0;"> -->
+<div id="divOnTop" style="top: 0; right: 0; left: 0;">
     <div ng-controller='ProjectsCtrl'>
         <md-content>
         <div class="form-style-8">
             <div>
-                <h2>Register Project <a id="cancelProject" style="float: right;">
+                <h2>Register Project <a ng-click="cancelProjectRegistration()" style="float: right;">
                     <span class="glyphicon glyphicon-remove"></span>
                 </a></h2>
             </div>

@@ -11,50 +11,17 @@ angular.module('myApp.home', ['ngRoute'])
 		})
 }])
 
-.controller('HomeCtrl', ['Billables', 'Clients', 'Credentials', 'Projects', '$http', '$scope', '$location', function(Billables, Clients, Credentials, Projects, $http, $scope, $location) {
+.controller('HomeCtrl', ['Billables', '$http', '$scope', '$location', '$state', function(Billables, $http, $scope, $location, $state) {
 	
-	$.get("http://localhost:8000/billables", function(data){
-		// console.log(JSON.stringify(data))
-		Billables.setData(data)
-	})
+	$scope.goToBillables = function(){
+        $state.go('billables')
+    }
 
-	$.get("http://localhost:8000/clients", function(data){
-		// console.log(JSON.stringify(data))
-		Clients.setData(data)
-	})
+	$scope.goToClients = function(){
+        $state.go('clients')
+    }
 
-	$.get("http://localhost:8000/projects", function(data){
-		// console.log(JSON.stringify(data))
-		Projects.setData(data)
-	})
-
-	$scope.login = function(){
-		var credentials = {
-			username: document.getElementsByName('loginForm')[0].username.value,
-			password: document.getElementsByName('loginForm')[0].password.value
-		}
-		Credentials.setData(credentials)
-		$(document).ready(function(){
-			$.post("http://localhost:8000/api-token-auth/", credentials, function(auth) {
-				$.ajax({
-					type: "GET",
-					url: "http://localhost:8000/developers/"+credentials.username,
-					headers: {
-						'Content-Type':'multipart/form-data'
-					},
-					beforeSend: function(xhr) {
-					  xhr.setRequestHeader("Authorization", "Bearer " + auth.token);
-					},
-					success: function(data){
-					  // $scope.billables = data.billables
-					  // console.log(JSON.stringify(data.billables))
-					  Billables.setData(data.billables)
-					  // $location.path('billables/'+credentials.username)
-					  $location.path('home/')
-					}
-				});
-			});
-		})
-		// window.location.href='http://localhost:8000/api-auth/login/'
-	}
+    $scope.goToProjects = function(){
+        $state.go('projects')
+    }
 }]);

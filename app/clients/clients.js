@@ -2,15 +2,18 @@
 
 angular.module('myApp.clients', ['ngRoute'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider
-	.when('/clients', {
-		templateUrl: 'clients/clients.html',
-		controller: 'ClientsCtrl'
-	}).when('/clients/:id', {
-		templateUrl: 'clients/client_detail.html',
-		controller: 'ClientsCtrl'
-	});
+.config(['$stateProvider', function($stateProvider) {
+	$stateProvider
+		.state('clients',{
+			url: '/clients',
+			templateUrl: 'clients/clients.html',
+			controller: 'ClientsCtrl'
+		})
+		.state('client_detail', {
+			url: 'client/detail',
+			templateUrl: 'clients/client_detail.html',
+			controller: 'ClientsCtrl'
+		})
 }])
 
 

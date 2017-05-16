@@ -38,6 +38,6 @@ angular.module('myApp.login', ['ngRoute', 'ui.router'])
 					.then(function(data){
 						Billables.setData(data.billables)
 					})
-			}).then($state.go('home'))
+			}).then($state.go('home', {username: credentials.username}))
 	}
 }]);

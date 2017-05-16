@@ -1,5 +1,7 @@
 
 <link rel="stylesheet"; href="projects/projects.css">
+<link rel="stylesheet"; href="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.css">
+<script src="https://unpkg.com/ng-table@2.0.2/bundles/ng-table.min.js"></script>
 
 <div style="top: 0; right: 0; left: 0;">
 
@@ -41,7 +43,7 @@
 						</div>
 	        		</md-toolbar>
 	        		<md-card-content ng-controller='ProjectsCtrl'>
-	        			<table class="table-striped" id="projectsTable">
+	        			<table ng-table="vm.tableParams" class="table table-striped" id="projectsTable" show-filter="true">
 	        				<thead>
 	        					<tr>
 									<th>Project ID</th>
@@ -52,7 +54,7 @@
 								</tr>
 	        				</thead>
 							<tbody>
-								<tr ng-repeat="project in projects | filter:searchText" ng-click=editProject(project.id) style="border: none;">
+								<tr ng-repeat="project in projects | filter:searchText" ng-click=viewProject(project) style="border: none;">
 									<td title="id"  sortable="'id'" style="border: none; height: 40px">{{project.id}}</td>
 								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{project.name}}</td>
 								    <td title="client"  sortable="'client'" style="border: none; height: 40px">{{project.client}}</td>
@@ -64,18 +66,9 @@
 								    	</a> -->
 								    </td>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td>project 1</td>
-									<td>client 1</td>
-									<td>1493679730690</td>
-									<td>50000</td>
-								</tr>
 							</tbody>
 	        			</table>
-	        			<button id="show_project_form">Add project</button>
-	        			<button ng-click="tester()">tester</button>
-	        			<button ng-click="putProject()">Add project</button>
+	        			<button ng-click="showProjectForm()">Add project</button>
 	        		</md-card-content>
 				</md-card>
 			</md-content>
