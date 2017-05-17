@@ -1,90 +1,59 @@
-<html ng-app="testApp">
-<link rel="stylesheet"; href="developers/billables/billables.css">
-
 <style type="text/css">
-	.full-width {
-	    width: 100%;
-	}
+	.inputdemoIcons {
+  /*
+.right-icon {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  left: auto;
+  margin-top: 0;
+}
+*/ }
+  .inputdemoIcons .inputIconDemo {
+    min-height: 48px; }
+  .inputdemoIcons md-input-container:not(.md-input-invalid) > md-icon.email {
+    color: green; }
+  .inputdemoIcons md-input-container:not(.md-input-invalid) > md-icon.name {
+    color: dodgerblue; }
+  .inputdemoIcons md-input-container.md-input-invalid > md-icon.email,
+  .inputdemoIcons md-input-container.md-input-invalid > md-icon.name {
+    color: red; }
 </style>
 
-<script src="bower_components/angular/angular.js"></script>
-<script type="text/javascript">
-	angular.module('testApp', [])
-		.controller('testCtrl', function($scope){
-			console.log('test app works')
-			$scope.tester = function(){
-				console.log('scope function works')
-			}
-		})
-</script>
+<div layout="column" layout-padding ng-cloak>
 
-<div style="top: 0; right: 0; left: 0;">
+  <br/>
+  <md-content class="md-no-momentum">
+    <md-input-container class="md-icon-float md-block">
+      <!-- Use floating label instead of placeholder -->
+      <label>Name</label>
+      <md-icon md-svg-src="img/icons/ic_person_24px.svg" class="name"></md-icon>
+      <input ng-model="user.name" type="text">
+    </md-input-container>
 
-	<section layout="row" flex="">
+    <md-input-container md-no-float class="md-block">
+      <md-icon md-svg-src="img/icons/ic_phone_24px.svg"></md-icon>
+      <input ng-model="user.phone" type="text" placeholder="Phone Number">
+    </md-input-container>
 
-		<md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
-			<md-toolbar style="background-color: #1b325b">
-				<h1 class="md-toolbar-tools">My Profile</h1>
-			</md-toolbar>
-			
-	    </md-sidenav>
+    <md-input-container class="md-block">
+      <!-- Use floating placeholder instead of label -->
+      <md-icon md-svg-src="img/icons/ic_email_24px.svg" class="email"></md-icon>
+      <input ng-model="user.email" type="email" placeholder="Email (required)" ng-required="true">
+    </md-input-container>
 
-		<!-- <div ng-controller='BillablesCtrl'> -->
-		<div>
-			<md-content layout="row" layout-align="space-around" layout-padding="layout-padding" class="login-form">
-				<!-- <md-card flex="flex" flex-gt-sm="50" flex-gt-md="33"> -->
-				<md-card flex="flex">
-					
-	        		<div ng-controller='testCtrl'>
-	        		<md-card-content>
-	        			<table class="table-striped " id="billablesTable">
-	        			<!-- <table class="table-striped mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width"> -->
-	        				<thead>
-	        					<tr>
-									<th>Billable ID</th>
-									<th>Billable Item</th>
-									<th>Project</th>
-									<th>Cost</th>
-								</tr>
-	        				</thead>
-							<tbody>
-								<tr ng-repeat="billable in billables | filter:searchText" ng-click=editBillable(billable.id) style="border: none;">
-									<td title="id"  sortable="'id'" style="border: none; height: 40px">{{billable.id}}</td>
-								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{billable.name}}</td>
-								    <td title="project"  sortable="'project'" style="border: none; height: 40px">{{billable.project}}</td>
-								    <td title="cost"  sortable="'cost'" style="border: none; height: 40px">
-								    	{{billable.cost}}
-								    	<a ng-click=deleteBillable(billable) style="float: right;">
-								    		<i class="material-icons">delete</i>
-								    	</a>
-								    </td>
-								</tr>
-								<tr>
-									<td>Billable ID</td>
-									<td>Billable Item</td>
-									<td>Project</td>
-									<td>Cost</td>
-								</tr>
-							</tbody>
-	        			</table>
-	        			<!-- <div>
-	        			<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" id="show_billable_form">
-  							<i class="material-icons">add</i>
-						</button>
-						</div> -->
-	        			<button id="show_billable_form" >Add billable item</button>
-	        			<button ng-click="tester()">tester</button>
-	        			<button ng-click="null">tester null</button>
-	        		</md-card-content>
-	        		</div>
-				</md-card>
-			</md-content>
-			<h3></h3>
-		</div>
-	</section>
+    <md-input-container md-no-float class="md-block">
+      <input ng-model="user.address" type="text" placeholder="Address" >
+      <md-icon md-svg-src="img/icons/ic_place_24px.svg" style="display:inline-block;"></md-icon>
+    </md-input-container>
+
+    <md-input-container class="md-icon-float md-icon-right md-block">
+      <label>Donation Amount</label>
+      <md-icon md-svg-src="img/icons/ic_card_giftcard_24px.svg"></md-icon>
+      <input ng-model="user.donation" type="number" step="0.01">
+      <md-icon md-svg-src="img/icons/ic_euro_24px.svg"></md-icon>
+    </md-input-container>
+
+  </md-content>
+
 </div>
-
-
-<!-- entry form css -->
-<div id="includedContent"></div>
-</html>

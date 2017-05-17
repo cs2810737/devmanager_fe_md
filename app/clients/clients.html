@@ -1,9 +1,10 @@
 
 <link rel="stylesheet"; href="clients/clients.css">
 
+
 <div style="top: 0; right: 0; left: 0;">
 
-	<section layout="row" flex="">
+	<section layout="column">
 
 		<md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
 			<md-toolbar style="background-color: #1b325b">
@@ -25,22 +26,19 @@
 
 		<!-- <div ng-controller='BillablesCtrl'> -->
 		<div>
-			<md-content layout="row" layout-align="space-around" layout-padding="layout-padding" class="login-form">
+			<md-content layout="row" layout-wrap layout-margin layout-align="center" >
 				<!-- <md-card flex="flex" flex-gt-sm="50" flex-gt-md="33"> -->
 				<md-card flex="flex">
 					<md-toolbar ng-controller='SideBarCtrl' style="background-color: #1b325b">
 						<div class="md-toolbar-tools">
 							<label class="label" for="clients">
 								<h3 style="float: left;">Clients</h3>
-								<!-- <input ng-model="searchText" style="padding-right: 0px; "> -->
 							</label>
-							<!-- <md-button ng-click="toggleLeft()" ng-hide="isOpenLeft()" class="md-primary"> -->
-								
-	          				<!-- </md-button> -->
 	          				
 						</div>
 	        		</md-toolbar>
-	        		<md-card-content ng-controller='ClientsCtrl'>
+	        		<section layout="column">
+	        		<md-card-content ng-controller='ClientsCtrl' flex="flex">
 	        			<table class="table-striped" id="clientsTable">
 	        				<thead>
 	        					<tr>
@@ -60,27 +58,21 @@
 								    	</a>
 								    </td>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td>client 1</td>
-									<td>1</td>
-								</tr>
 							</tbody>
 	        			</table>
 	        			<!-- <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" id="show_client_form">
   							<i class="material-icons">Add client</i>
 						</button> -->
-						<button id="show_client_form" >Add client</button>
-						<button ng-click="tester()">tester</button>
-						<button ng-click="putClient(form)">put client test</button>
+						<div class="dialog-demo-content" layout="row" layout-wrap layout-margin layout-align="center">
+    						<md-button class="md-primary md-raised" ng-click="showCreateClientDialog($event)"  >
+      							Add client
+    						</md-button>
+  						</div>
 	        		</md-card-content>
+	        		</section>
 				</md-card>
 			</md-content>
 			<h3></h3>
 		</div>
 	</section>
 </div>
-
-
-<!-- entry form css -->
-<div id="includedContent"></div>

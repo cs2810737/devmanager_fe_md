@@ -17,50 +17,42 @@ angular.module('myApp.clients', ['ngRoute'])
 }])
 
 
-.controller('ClientsCtrl', ['Billables', 'Credentials', '$http', '$scope', '$location', function(Billables, Credentials, $http, $scope, $location){
-	$('#show_client_form').on('click', function(){
- 		$scope.showClientForm()
-	})
-
-	$scope.showClientForm = function(){
-		$('#divOnTop').fadeIn(500)		
-	}
- 
-	$(function(){
-		$('#includedContent').load('/clients/create-client.html')
-	})
+.controller('ClientsCtrl', ['$http', '$scope', '$location', '$mdDialog', function($http, $scope, $location, $mdDialog){
 	
-	$(document).ready(function(){
-		$('#clientsTable').DataTable();
-	});
+	$scope.showCreateClientDialog = function(ev) {
+		$mdDialog.show({
+			controller: DialogController,
+			templateUrl: 'clients/create-client.html',
+			parent: angular.element(document.body),
+			targetEvent: ev,
+			clickOutsideToClose:true
+    	})
+        .then(function(answer) {
+        	$scope.status = 'You said the information was "' + answer + '".';
+        }, function() {
+        	$scope.status = 'You cancelled the dialog.';
+        });
+  	};
 
-	$scope.tester = function(){
-        console.log('tester works');
-    }
+  	function DialogController($scope, $mdDialog) {
+  		$scope.hide = function() {
+  			$mdDialog.hide();
+    	};
+
+    	$scope.cancel = function() {
+      		$mdDialog.cancel();
+    	};
+
+    	$scope.answer = function(answer) {
+      		$mdDialog.hide(answer);
+    	};
+  	}
 
 	// $scope.clients = Clients.getData()
 	$scope.goToClients = function(){
 		$location.path('clients')
 	}
 
-	$scope.showCreateClientDialog = function(ev) {
-		// Appending dialog to document.body to cover sidenav in docs app
-		var confirm = $mdDialog.prompt()
-			.title('What would you name your dog?')
-			.textContent('Bowser is a common name.')
-			.placeholder('Dog name')
-			.ariaLabel('Dog name')
-			.initialValue('Buddy')
-			.targetEvent(ev)
-			.ok('Okay!')
-			.cancel('I\'m a cat person');
-
-		$mdDialog.show(confirm).then(function(result) {
-			$scope.status = 'You decided to name your dog ' + result + '.';
-		}, function() {
-			$scope.status = 'You didn\'t name your dog.';
-		});
-	};
 	//create a new billable
 	$scope.putClient = function(form){
 		// var data = {
