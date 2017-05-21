@@ -16,12 +16,43 @@ angular.module('myApp.clients', ['ngRoute'])
 		})
 }])
 
+.controller('ClientDialogCtrl', ['$http', '$scope', '$state', '$mdDialog', function($http, $scope, $state, $mdDialog){
+	$scope.hide = function() {
+  		$mdDialog.hide();
+    };
 
-.controller('ClientsCtrl', ['$http', '$scope', '$location', '$mdDialog', function($http, $scope, $location, $mdDialog){
+    $scope.cancel = function() {
+    	$mdDialog.cancel();
+    };
+
+    $scope.answer = function(answer) {
+    	$mdDialog.hide(answer);
+    };
+    
+
+    $scope.putClient = function(){
+		var data = {
+			'name': $scope.name,
+			'phone_number': $scope.phone,
+			'email': $scope.email,
+			'address': $scope.address
+		}
+		$http.post('http://localhost:8000/clients/', data)
+			.then($state.go('clients'))
+	}
+}])
+
+.controller('ClientsCtrl', ['$http', '$scope', '$state', '$mdDialog', function($http, $scope, $state, $mdDialog){
+
+	$http.get('http://localhost:8000/clients')
+		.then(function(result){
+			console.log(result.data)
+			$scope.clients = result.data
+		})
 	
 	$scope.showCreateClientDialog = function(ev) {
 		$mdDialog.show({
-			controller: DialogController,
+			controller: 'ClientDialogCtrl',
 			templateUrl: 'clients/create-client.html',
 			parent: angular.element(document.body),
 			targetEvent: ev,
@@ -34,51 +65,13 @@ angular.module('myApp.clients', ['ngRoute'])
         });
   	};
 
-  	function DialogController($scope, $mdDialog) {
-  		$scope.hide = function() {
-  			$mdDialog.hide();
-    	};
-
-    	$scope.cancel = function() {
-      		$mdDialog.cancel();
-    	};
-
-    	$scope.answer = function(answer) {
-      		$mdDialog.hide(answer);
-    	};
-  	}
-
 	// $scope.clients = Clients.getData()
 	$scope.goToClients = function(){
 		$location.path('clients')
 	}
 
 	//create a new billable
-	$scope.putClient = function(form){
-		// var data = {
-		// 	'name': document.getElementsByName('putForm')[0].name.value,
-		// 	'project': document.getElementsByName('putForm')[0].project.value,
-		// 	'cost': document.getElementsByName('putForm')[0].cost.value,
-		// 	'developer': $scope.billables[0].developer
-		// }
-		var data = {
-			'name': 'name',
-		}
-		// console.log(data)
-		$http.get('http://localhost:8000/clients')
-			.then(function(response){
-				// var data_id = response.data.length + 1
-				$.ajax({
-					url: 'http://localhost:8000/clients/',
-					type: 'POST',
-					data: data,
-					success: function(data){
-						// $location.path('billables/'+credentials.username)
-						$location.path('/clients')
-					}
-				})
-		})
-	}
+	
 		//edit an existing billable
 	$scope.editClient = function(billable_id){
 

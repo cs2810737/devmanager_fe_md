@@ -26,21 +26,38 @@ angular.module('myApp.projects', ['ngRoute'])
 
 
 
-.controller('ProjectsCtrl', ['$http', '$scope', '$location', '$state', function($http, $scope, $location, $state) {
+.controller('ProjectsCtrl', ['$http', '$scope', '$location', '$state', '$mdDialog', function($http, $scope, $location, $state, $mdDialog) {
 	// $(document).ready(function(){
 	// 	$('#projectsTable').DataTable();
 	// });
-	$scope.putProject = function(){
-		console.log('works')	
-	}
-	
-	$scope.showProjectForm = function(){
-		$state.go('create_project')
-	}
+	$scope.showCreateProjectDialog = function(ev) {
+		$mdDialog.show({
+			controller: DialogController,
+			templateUrl: 'projects/create-project.html',
+			parent: angular.element(document.body),
+			targetEvent: ev,
+			clickOutsideToClose:true
+    	})
+        .then(function(answer) {
+        	$scope.status = 'You said the information was "' + answer + '".';
+        }, function() {
+        	$scope.status = 'You cancelled the dialog.';
+        });
+  	};
 
-	$scope.cancelProjectRegistration = function(){
-		$state.go('projects')
-	}
+  	function DialogController($scope, $mdDialog) {
+  		$scope.hide = function() {
+  			$mdDialog.hide();
+    	};
+
+    	$scope.cancel = function() {
+      		$mdDialog.cancel();
+    	};
+
+    	$scope.answer = function(answer) {
+      		$mdDialog.hide(answer);
+    	};
+  	}
 	$scope.viewProject = function(project){
 		$state.go('project_detail', {project: project})
 	}

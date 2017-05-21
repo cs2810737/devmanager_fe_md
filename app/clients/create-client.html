@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<div ng-controller="ClientsCtrl" layout="column"  layout-align="space-around" layout-padding="layout-padding" ng-cloak>
+<div ng-controller="ClientDialogCtrl" layout="column"  layout-align="space-around" layout-padding="layout-padding" ng-cloak>
 
     <br/>
     <md-content class="md-no-momentum" style="width: 800px">
@@ -17,47 +17,25 @@
 
             <label>Name</label>
             <md-icon class="material-icons">person</md-icon>
-            <input ng-model="user.name" type="text">
+            <input ng-model="name" type="text">
         </md-input-container>
-        <md-input-container md-no-float class="md-block">
+        <md-input-container class="md-block md-icon-float">
             <md-icon class="material-icons">local_phone</md-icon>
-            <input ng-model="user.phone" type="text" placeholder="Phone Number">
+            <input ng-model="phone" type="text" placeholder="Phone Number">
         </md-input-container>
 
-        <md-input-container class="md-block">
+        <md-input-container class="md-block md-icon-float">
             <!-- Use floating placeholder instead of label -->
             <md-icon class="material-icons">email</md-icon>
-            <input ng-model="user.email" type="email" placeholder="Email (required)" ng-required="true">
+            <input ng-model="email" type="email" placeholder="Email (required)" ng-required="true">
         </md-input-container>
 
-        <md-input-container md-no-float class="md-block">
+        <md-input-container class="md-block md-icon-float">
             <md-icon class="material-icons" style="display:inline-block;">location_on</md-icon>
-            <input ng-model="user.address" type="text" placeholder="Address" >
+            <input ng-model="address" type="text" placeholder="Address" >
         </md-input-container>
 
-        
+        <button ng-click="putClient()">Add Client</button>
 
     </md-content>
 </div>
-
-<style type="text/css">
-    .inputdemoIcons {
-        /*
-        .right-icon {
-            position: absolute;
-            top: 4px;
-            right: 2px;
-            left: auto;
-            margin-top: 0;
-        }
-*/ }
-    .inputdemoIcons .inputIconDemo {
-        min-height: 48px; }
-    .inputdemoIcons md-input-container:not(.md-input-invalid) > md-icon.email {
-        color: green; }
-    .inputdemoIcons md-input-container:not(.md-input-invalid) > md-icon.name {
-        color: dodgerblue; }
-    .inputdemoIcons md-input-container.md-input-invalid > md-icon.email,
-    .inputdemoIcons md-input-container.md-input-invalid > md-icon.name {
-        color: red; }
-</style>

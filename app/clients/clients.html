@@ -38,19 +38,25 @@
 						</div>
 	        		</md-toolbar>
 	        		<section layout="column">
-	        		<md-card-content ng-controller='ClientsCtrl' flex="flex">
-	        			<table class="table-striped" id="clientsTable">
+	        		<md-card-content ng-controller='ClientsCtrl' flex="flex" >
+	        			<table class="mdl-data-table mdl-js-data-table  table-striped" id="clientsTable" style="width: 100%">
 	        				<thead>
 	        					<tr>
-									<th>Client ID</th>
-									<th>Client Name</th>
-									<th>Number of Projects</th>
+									<th class="mdl-data-table__header--sorted-ascending" style="color: #fff">Client ID</th>
+									<th class="mdl-data-table__header--sorted-ascending" style="color: #fff">Client Name</th>
+									<th class="mdl-data-table__header--sorted-ascending" style="color: #fff">Phone Number</th>
+									<th class="mdl-data-table__header--sorted-ascending" style="color: #fff">Email Address</th>
+									<th class="mdl-data-table__header--sorted-ascending" style="color: #fff">Physical Address</th>
+									<th class="mdl-data-table__header--sorted-ascending" style="color: #fff">Number of Projects</th>
 								</tr>
 	        				</thead>
 							<tbody>
 								<tr ng-repeat="client in clients | filter:searchText" ng-click=editClient(client.id) style="border: none;">
 									<td title="id"  sortable="'id'" style="border: none; height: 40px">{{client.id}}</td>
 								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{client.name}}</td>
+								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{client.phone_number}}</td>
+								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{client.email}}</td>
+								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{client.address}}</td>
 								    <td title="cost"  sortable="'cost'" style="border: none; height: 40px">
 								    	{{client.noOfProjects}}
 								    	<a ng-click=deleteBillable(billable) style="float: right;">
