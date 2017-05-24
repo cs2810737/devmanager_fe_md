@@ -11,7 +11,7 @@
     }
 </script> -->
 
-<div ng-controller="ProjectsCtrl as ctrl" layout="column"  layout-align="space-around" layout-padding="layout-padding" ng-cloak>
+<div ng-controller="ProjectDialogCtrl" layout="column"  layout-align="space-around" layout-padding="layout-padding" ng-cloak>
 
     <br/>
     <md-content class="md-no-momentum" style="width: 800px">
@@ -26,23 +26,29 @@
             <!-- Use floating label instead of placeholder -->
             <label>name...</label>
             <md-icon class="material-icons">format_quote</md-icon>
-            <input ng-model="project.name" type="text">
+            <input ng-model="name" type="text">
         </md-input-container>
 
         <md-input-container class="md-block md-icon-float">
             <md-icon class="material-icons">date_range</md-icon>
-            <input class="mdl-textfield__input" type="date" id="sample3" placeholder="start date...">
+            <input class="mdl-textfield__input" type="date" ng-model="start_date" id="sample3" placeholder="start date...">
         </md-input-container>
 
-        <div layout="row">
-            <md-input-container class="md-block md-icon-float">
+        <div layout="row" flex=''>
+            <md-input-container class="md-block md-icon-float" flex='50'>
                 <md-icon class="material-icons">person</md-icon>
-                <input ng-model="project.client" type="text" placeholder="client...">
+                <!-- <input ng-model="client" type="text" placeholder="client..."> -->
+                <md-select ng-model="client" placeholder="client...">
+                    <md-option ng-repeat="client in clients" ng-model="client" value="client">{{client.name}}</md-option>
+                </md-select>
             </md-input-container>
 
-            <md-input-container class="md-block md-icon-float">
+            <md-input-container class="md-block md-icon-float" flex='50'>
                 <md-icon class="material-icons">person</md-icon>
-                <input ng-model="project.lead" type="text" placeholder="lead developer...">
+                <!-- <input ng-model="lead" type="text" placeholder="lead developer..."> -->
+                <md-select ng-model="lead" placeholder="lead..." class="md-no-underline">
+                    <md-option ng-repeat="lead in leads" ng-model="lead" value="lead">{{lead}}</md-option>
+                </md-select>
             </md-input-container>
         </div>
 
@@ -54,7 +60,7 @@
 
         <md-input-container class="md-block md-icon-float">
             <md-icon class="material-icons">description</md-icon>
-            <textarea ng-model="project.description" placeholder="description..." onkeyup="adjust_textarea(this)"></textarea>
+            <textarea ng-model="description" placeholder="description..." onkeyup="adjust_textarea(this)"></textarea>
         </md-input-container>
 
         <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" id="show_client_form">

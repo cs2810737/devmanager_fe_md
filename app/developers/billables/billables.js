@@ -11,80 +11,65 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
 			templateUrl: 'developers/billables/billables.html',
 			controller: 'BillablesCtrl'
 		})
-		.state('billables.create', {
+		.state('create_billable', {
             url: 'billables/create/',
 			templateUrl: 'developers/billables/create-billable.html',
+            controller: 'BillableDialogCtrl'
   		})
 	}])
 
-.controller('BillablesCtrl', ['Billables', 'Credentials', '$http', '$scope', '$location', '$state', function(Billables, Credentials, $http, $scope, $location, $state){
-
-    
-    $http.get("http://localhost:8000/billables/")
-        .then(function(data){
-            Billables.setData(data.billables)
-        })
-    
-    $scope.showBillableForm = function(){
-        console.log('herh')
-        $state.go('create')
-    }
-
-    $scope.billables = Billables.getData();
-
-    
-
-    $scope.showCreateBillableDialog = function(ev) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        
+.controller('BillableDialogCtrl', ['BillFormData', 'User', '$http', '$scope', '$state', '$mdDialog', function(BillFormData, User, $http, $scope, $state, $mdDialog){
+    var formData = BillFormData.getData()
+    $scope.user = User.getData()
+    $scope.developer_id = $scope.user.id
+    $scope.developer_name = $scope.user.username
+    $scope.project_name = formData.project.name
+    $scope.project_id = formData.project.id
+    $scope.hide = function() {
+        $mdDialog.hide();
     };
 
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
 
+    $scope.answer = function(answer) {
+        $mdDialog.hide(answer);
+    };
 
+    $scope.putBillable = function(){
+        var data = {
+            'name': $scope.name,
+            'cost': $scope.cost,
+            'recurring': $scope.recurring,
+            'reg_date': $scope.reg_date,
+            'project': $scope.project_id,
+            'developer': $scope.developer_id,
+            'description': $scope.description
+        }
+        console.log(data)
+        $http.post('http://localhost:8000/billables/', data)
+            .then(function(){
+                $state.go('projects', null, {reload:true})
+                $mdDialog.cancel();
+            })
+    }
+}])
+
+.controller('BillablesCtrl', ['Token', '$http', '$scope', '$location', '$state', '$mdDialog', function(Token, $http, $scope, $location, $state, $mdDialog){
+
+    
+    // $http.get("http://localhost:8000/billables/")
+    //     .then(function(data){
+    //         Billables.setData(data.billables)
+    //     })
+    
     
 
 	//create a new billable
 	$scope.putBillable = function(form){
-        
-		// var data = {
-		// 	'name': document.getElementsByName('putForm')[0].name.value,
-		// 	'project': document.getElementsByName('putForm')[0].project.value,
-		// 	'cost': document.getElementsByName('putForm')[0].cost.value,
-		// 	'developer': $scope.billables[0].developer,
-  //           'recurring': document.getElementsByName('putForm')[0].recurring.value
-  //   	}
-        var data = {
-            'name': 'billable_test',
-            'project': 1,
-            'cost': 10000,
-            'developer': 1,
-            'recurring': true,
-            'description': 'bullshit'
-        }
-    	console.log('data')
-    	$http.get('http://localhost:8000/billables')
-    		.then(function(response){
-    			// var data_id = response.data.length + 1
-                console.log('reches here2')
-                // console.log(Credentials.getData().username)
-    			$.ajax({
-    				url: 'http://localhost:8000/billables/',
-    				type: 'POST',
-    				data: data,
-    				success: function(data){
-    					// $location.path('billables/'+credentials.username)
-    					$http.get("http://localhost:8000/developers/"+Credentials.getData().username)
-    						.then(function(response){
-    							$scope.billables = response.data.billables
 
-    						})
-    						.then(function(){
-    							$location.path('billables/'+Credentials.getData().username)
-    						})
-    					}
-    				})
-    		})
-    	}
+    }
     	//edit an existing billable
     $scope.editBillable = function(billable_id){
 

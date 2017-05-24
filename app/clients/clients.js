@@ -17,6 +17,9 @@ angular.module('myApp.clients', ['ngRoute'])
 }])
 
 .controller('ClientDialogCtrl', ['$http', '$scope', '$state', '$mdDialog', function($http, $scope, $state, $mdDialog){
+	
+	
+
 	$scope.hide = function() {
   		$mdDialog.hide();
     };
@@ -27,8 +30,7 @@ angular.module('myApp.clients', ['ngRoute'])
 
     $scope.answer = function(answer) {
     	$mdDialog.hide(answer);
-    };
-    
+    };  
 
     $scope.putClient = function(){
 		var data = {
@@ -37,16 +39,22 @@ angular.module('myApp.clients', ['ngRoute'])
 			'email': $scope.email,
 			'address': $scope.address
 		}
-		$http.post('http://localhost:8000/clients/', data)
-			.then($state.go('clients'))
+		
+		
+			$http.post('http://localhost:8000/clients/', data)
+				.then(function(){
+					$state.go('clients', null, {reload:true})
+					$mdDialog.cancel();
+				})
 	}
 }])
 
-.controller('ClientsCtrl', ['$http', '$scope', '$state', '$mdDialog', function($http, $scope, $state, $mdDialog){
+.controller('ClientsCtrl', ['Token','$http', '$scope', '$state', '$mdDialog', function(Token, $http, $scope, $state, $mdDialog){
+
+	// $http.defaults.headers.common.Authorization = Token.getData()
 
 	$http.get('http://localhost:8000/clients')
 		.then(function(result){
-			console.log(result.data)
 			$scope.clients = result.data
 		})
 	
@@ -65,28 +73,32 @@ angular.module('myApp.clients', ['ngRoute'])
         });
   	};
 
-	// $scope.clients = Clients.getData()
 	$scope.goToClients = function(){
 		$location.path('clients')
 	}
 
-	//create a new billable
-	
-		//edit an existing billable
 	$scope.editClient = function(billable_id){
 
 	}
 
-	$scope.deleteClient = function(billable){
-		$.ajax({
-			url: 'http://localhost:8000/billables/'+billable.id,
-			type: 'DELETE',
-			success: function(data){
-				console.log('success')
-			},
-			error: function(error){
-				console.log('error')
-			}
-		})
+	$scope.deleteClient = function(ev, client){
+		var confirm = $mdDialog.confirm()
+			.title('Are you sure you would you like to delete user '+client.name)
+			.textContent('Careful, you cannot undo this action.')
+			.ariaLabel('Lucky day')
+			.targetEvent(ev)
+			.ok('Yes, delete user \''+client.name+'\'')
+			.cancel('No, cancel delete operation')
+
+		$mdDialog.show(confirm)
+			.then(function(){
+				$http.delete('http://localhost:8000/clients/'+ client.id)
+					.then(function(){
+						$scope.deletion_message = 'Successfully deleted user '+client.name
+						$state.go('clients', null, {reload: true})
+					})
+				}, function(){
+					$scope.action_message = 'Cancelled deletion'
+				})
 	}
 }])

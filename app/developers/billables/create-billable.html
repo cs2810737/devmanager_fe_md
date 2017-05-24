@@ -7,7 +7,7 @@
 	<input type="text" name="cost"></br>
 </form> -->
 <!-- <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'> -->
-<style type="text/css">
+<!-- <style type="text/css">
     .form-style-8{
         font-family: 'Open Sans Condensed', arial, sans;
         width: 1000px;
@@ -100,9 +100,9 @@
     .demo-card-wide > .mdl-card__menu {
         color: #fff;
     }
-</style>
+</style> -->
 
-<style type="text/css">
+<!-- <style type="text/css">
     .switchdemoBasicUsage .inset {
       padding-left: 25px;
       padding-top: 25px;
@@ -119,70 +119,68 @@
     $('#cancelBillable').click(function(){
         $('#divOnTop').fadeOut(500)
     })
-</script>
+</script> -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
-<!-- <div id="divOnTop" style="display: none; top: 60px; right: 0; left: 0;"> -->
-<div id="divOnTop">
-    <div ng-controller='BillablesCtrl'>
-        <!-- <section layout="row" flex=""> -->
-        <div class="mdl-cell mdl-cell--12-col">
-            <md-content>
-                <div class="form-style-8">
-                    <div>
-                        <h2>Register Billable <a id="cancelBillable" style="float: right;">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </a></h2>
-                    </div>
-                    <form name="putForm">
-                        <!-- <input type="text" name="name" placeholder="name" /> -->
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="sample3" name="name">
-                            <label class="mdl-textfield__label" for="sample3">name...</label>
-                        </div>
-                        <!-- <input type="text" name="project" placeholder="project id" /> -->
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fullwidth">
-                            <input class="mdl-textfield__input" type="text" id="sample2" name="project" readonly tabIndex="-1">
-                            <!-- <label for="sample2">
-                                <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
-                            </label> -->
-                            <label for="sample2" class="mdl-textfield__label">project id...<i class="mdl-icon-toggle__label material-icons" style="float: right;">keyboard_arrow_down</i></label>
-                            <ul for="sample2" class="mdl-menu mdl-menu--bottom-left mdl-js-menu" >
-                                <li class="mdl-menu__item" data-val="DE">Germany</li>
-                                <li class="mdl-menu__item" data-val="BY">Belarus</li>
-                                <li class="mdl-menu__item" data-val="RU">Russia</li>
-                            </ul>
-                        </div>
-                        <!-- <input type="number" min="0.00" step="100" name="cost" placeholder="cost"/> -->
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="number" min="0.00" step="100" id="sample3" name="cost">
-                            <label class="mdl-textfield__label" for="sample3">cost...</label>
-                        </div>
-                        <!-- <input type="text" name="developer" placeholder="developer" /> -->
-                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="sample3" name="developer">
-                            <label class="mdl-textfield__label" for="sample3">developer...</label>
-                        </div>
-                        <!-- <textarea placeholder="description" onkeyup="adjust_textarea(this)"></textarea> -->
-                        <div class="mdl-textfield mdl-js-textfield">
-                            <textarea class="mdl-textfield__input" type="text" rows= "3" id="sample5" onkeyup="adjust_textarea(this)" ></textarea>
-                            <label class="mdl-textfield__label" for="sample5">description...</label>
-                        </div>
-                        <!-- <md-switch class="inset" ng-model="recurrent" name="recurrent" aria-label="recurrent" ng-true-value="'yup'" ng-false-value="'nope'" class="md-warn">
-                            bill recurrent? (md-warn): {{ recurrent }}
-                        </md-switch> -->
-                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
-                            <span class="mdl-switch__label">bill recurrent?</span>
-                            <input type="checkbox" id="switch-1" class="mdl-switch__input" checked style="float: right;" name="recurring">
-                        </label>
-                        <button ng-click="putBillable(putForm)">Add Billable</button>
-                        <button ng-click="tester()">tester</button>
-                    </form>
-                </div>
-            </md-content>
-        </div>
-    </div>
-</div>
 
+<div ng-controller="BillableDialogCtrl" layout="column"  layout-align="space-around" layout-padding="layout-padding" ng-cloak>
+
+    <br/>
+    <md-content class="md-no-momentum" style="width: 800px">
+        <md-toolbar >
+            <div class="md-toolbar-tools">
+                <h2>Register Billable<a id="cancelClient" style="float: right;" ng-click="cancel()">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </a></h2>
+            </div>
+        </md-toolbar>
+        <md-input-container class="md-icon-float md-block">
+            <!-- Use floating label instead of placeholder -->
+            <label>name...</label>
+            <md-icon class="material-icons">format_quote</md-icon>
+            <input ng-model="name" type="text">
+        </md-input-container>
+
+        <div layout="row" flex=''>
+            <md-input-container class="md-block md-icon-float" flex='50'>
+                <md-icon class="material-icons">build</md-icon>
+                <!-- <input ng-model="client" type="text" placeholder="client..."> -->
+                <md-select ng-model="project_id" placeholder="project...">
+                    <md-option >{{project_name}}</md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container class="md-block md-icon-float" flex='50'>
+                <md-icon class="material-icons">person</md-icon>
+                <!-- <input ng-model="lead" type="text" placeholder="lead developer..."> -->
+                <md-select ng-model="developer_id" placeholder="developer..." class="md-no-underline">
+                    <md-option >{{developer_name}}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+
+        <md-input-container class="md-block md-icon-float">
+            
+            <md-icon class="material-icons">local_atm</md-icon>
+            <input ng-model="cost" type="number" min="0.00" step="100" id="sample3" placeholder="cost...">
+            
+        </md-input-container>
+
+        <md-input-container class="md-block md-icon-float">
+            <md-icon class="material-icons">description</md-icon>
+            <textarea ng-model="description" placeholder="description..." onkeyup="adjust_textarea(this)"></textarea>
+        </md-input-container>
+
+        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+            <span class="mdl-switch__label">bill recurrent?</span>
+            <input type="checkbox" ng-model="recurring" class="mdl-switch__input" checked style="float: right;" name="recurring">
+        </label>
+
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" ng-click=putBillable()>
+            <i class="material-icons">add</i>
+        </button>
+
+    </md-content>
+</div>

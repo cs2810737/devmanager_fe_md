@@ -37,9 +37,8 @@
 	          				
 						</div>
 	        		</md-toolbar>
-	        		<section layout="column">
 	        		<md-card-content ng-controller='ClientsCtrl' flex="flex" >
-	        			<table class="mdl-data-table mdl-js-data-table  table-striped" id="clientsTable" style="width: 100%">
+	        			<table class="mdl-data-table mdl-js-data-table table-striped" id="clientsTable" style="width: 100%">
 	        				<thead>
 	        					<tr>
 									<th class="mdl-data-table__header--sorted-ascending" style="color: #fff">Client ID</th>
@@ -59,7 +58,7 @@
 								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{client.address}}</td>
 								    <td title="cost"  sortable="'cost'" style="border: none; height: 40px">
 								    	{{client.noOfProjects}}
-								    	<a ng-click=deleteBillable(billable) style="float: right;">
+								    	<a ng-click="deleteClient($event, client)" style="float: right;">
 								    		<span class="glyphicon glyphicon-trash"></span>
 								    	</a>
 								    </td>
@@ -70,12 +69,11 @@
   							<i class="material-icons">Add client</i>
 						</button> -->
 						<div class="dialog-demo-content" layout="row" layout-wrap layout-margin layout-align="center">
-    						<md-button class="md-primary md-raised" ng-click="showCreateClientDialog($event)"  >
+    						<button class="md-primary md-raised" ng-click="showCreateClientDialog($event)"  >
       							Add client
-    						</md-button>
+    						</button>
   						</div>
 	        		</md-card-content>
-	        		</section>
 				</md-card>
 			</md-content>
 			<h3></h3>

@@ -21,12 +21,13 @@
 		    <th>Total Developer Cost</th>
 	  	</tr>
 	    <tr ng-repeat="developer in developers" style="line-height: 40px">
-	        <td title="'Name'"  sortable="'name'">{{developer.name}}</td>
+	        <td title="'Name'"  sortable="'name'">{{developer.user_id}}</td>
 	        <td title="'hourly_rate'" >{{developer.hourly_rate}}</td>
 	        <td title='hours_worked'> {{developer.hours_worked}} </td>
-	        <td title='total_dev_cost'> {{developer.cost }} </td>
+	        <td title='total_dev_cost'> {{developer.monthly_wage }} </td>
 	    </tr>
 	</table>
+	<button ng-click="showAddDeveloperDialog()">Add developer</button>
 	<p>Grand total programmer cost</p>
 	<tr>
 	    <td title='grand_total_programmer'><b>{{grand_total_programmer_cost}}</b></td>
@@ -37,14 +38,20 @@
 	<table ng-table="billables" class="table-striped" show-filter="true">
 		<tr>
 		    <th>Name</th>
+		    <th>Recurring</th>
+		    <th>Registration Date</th>
+		    <th>Description</th>
 		    <th>Cost</th>
 	  	</tr>
 	    <tr ng-repeat="billable in billables" style="line-height: 40px">
-	        <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
-	            {{billable.name}}</td>
+	        <td title="'Name'" filter="{ name: 'text'}" sortable="'name'"> {{billable.name}} </td>
+	        <td title='recurring'> {{billable.recurring}} </td>
+	        <td title='reg_date'> {{billable.reg_date}} </td>
+	        <td title="description"> {{billable.description}} </td>
 	        <td title='cost'> {{billable.cost}} </td>
 	    </tr>
 	</table>
+	<button ng-click="showCreateBillableDialog()">Add billable</button>
 	<p>Billables Grand total cost</p>
 	<tr>
 	    <td title='grand_total_programmer'><b>{{total_billable_cost}}</b></td>

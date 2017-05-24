@@ -11,7 +11,7 @@ angular.module('myApp.developers', ['ngRoute'])
 		})
 }])
 
-.controller('DevelopersCtrl', ['Billables', 'Credentials', '$http', '$scope', '$location', function(Billables, Credentials, $http, $scope, $location) {
+.controller('DevelopersCtrl', ['Token', '$http', '$scope', '$location', function(Token, $http, $scope, $location) {
 	
 
 	$scope.goToRegistration = function(){

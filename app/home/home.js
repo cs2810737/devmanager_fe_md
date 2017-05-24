@@ -11,7 +11,7 @@ angular.module('myApp.home', ['ngRoute'])
 		})
 }])
 
-.controller('HomeCtrl', ['Billables', '$http', '$scope', '$location', '$state', function(Billables, $http, $scope, $location, $state) {
+.controller('HomeCtrl', ['$http', '$scope', '$location', '$state', function($http, $scope, $location, $state) {
 	
 	$scope.goToBillables = function(){
         $state.go('billables')

@@ -43,9 +43,6 @@ input[type="submit"]:hover {
     background:linear-gradient(to bottom, #b64e26 5%, #b64e26 100%);
     background-color:#b64e26;
 }
-#showBillableForm {
-	background-color:#1b325b
-}
 
 .wide {
     width: 100%

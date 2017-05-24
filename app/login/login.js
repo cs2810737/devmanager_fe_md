@@ -10,7 +10,7 @@ angular.module('myApp.login', ['ngRoute', 'ui.router'])
 // 		})
 // }])
 
-.controller('LoginCtrl', ['Billables','Credentials', '$http', '$scope', '$state', function(Billables, Credentials, $http, $scope, $state) {
+.controller('LoginCtrl', ['Token', 'User', '$http', '$scope', '$state', function(Token, User, $http, $scope, $state) {
 	
 
 	// $scope.tester = function(){
@@ -21,23 +21,16 @@ angular.module('myApp.login', ['ngRoute', 'ui.router'])
 			username: $scope.vm.username,
 			password: $scope.vm.password
 		}
+		$http.get("http://localhost:8000/users/"+$scope.vm.username)
+			.then(function(result){
+				console.log(result.data)
+				User.setData(result.data)
+			})
 
 		$http.post("http://localhost:8000/api-token-auth/", credentials)
 			.then(function(auth){
-				$http.defaults.headers.common.Authorization = "Bearer " + auth.token;
-			}).then(function(){
-				$http.get("http://localhost:8000/developers/"+credentials.username)
-					.then(function(data){
-						// Billables.setData(data.billables)
-					})
-				$http.get("http://localhost:8000/projects/"+credentials.username)
-					.then(function(data){
-						Projects.setData(data.billables)
-					})
-				$http.get("http://localhost:8000/billables/")
-					.then(function(data){
-						Billables.setData(data.billables)
-					})
+				Token.setData("Bearer " + auth.token)
+				// $http.defaults.headers.common.Authorization = "Bearer " + auth.token;
 			}).then($state.go('home', {username: credentials.username}))
 	}
 }]);

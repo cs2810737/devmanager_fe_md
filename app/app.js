@@ -34,50 +34,38 @@ config(['$locationProvider', '$urlRouterProvider', '$stateProvider', function($l
 	
 }])
 
-.factory('Billables', function(){
-	var billables
-	return {
-		setData: function(data){
-			billables = data
-		},
-		getData: function(){
-			return billables
-		}
-	}
+.factory('User', function(){
+  var user
+  return {
+    setData: function(data){
+      user = data
+    },
+    getData: function(){
+      return user
+    }
+  }
 })
 
-.factory('Clients', function(){
-	var clients
-	return {
-		setData: function(data){
-			clients = data
-		},
-		getData: function(){
-			return clients
-		}
-	}
+.factory('BillFormData', function(){
+  var billFormData
+  return {
+    setData: function(data){
+      billFormData = data
+    },
+    getData: function(data){
+      return billFormData
+    }
+  }
 })
 
-.factory('Credentials', function(){
-	var credentials
-	return {
-		setData: function(data){
-			credentials = data
-		},
-		getData: function(){
-			return credentials
-		}
-	}
-})
-
-.factory('Projects', function(){
-	var projects
-	return {
-		setData: function(data){
-			projects = data
-		},
-		getData: function(){
-			return projects
-		}
-	}
+.factory('Token', function(){
+  var token
+  return {
+    setData: function(data){
+      token = data
+    },
+    getData: function(){
+      return token
+    }
+  }
 })
