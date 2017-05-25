@@ -29,9 +29,9 @@
             <input ng-model="name" type="text">
         </md-input-container>
 
-        <md-input-container class="md-block md-icon-float">
-            <md-icon class="material-icons">date_range</md-icon>
-            <input class="mdl-textfield__input" type="date" ng-model="start_date" id="sample3" placeholder="start date...">
+        <md-input-container flex='100'>
+            <label>start date...</label>
+            <md-datepicker ng-model="start_date"></md-datepicker>
         </md-input-container>
 
         <div layout="row" flex=''>

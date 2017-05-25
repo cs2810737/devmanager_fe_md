@@ -176,14 +176,14 @@ angular.module('myApp.projects', ['ngRoute'])
 			.textContent('Careful, you cannot undo this action.')
 			.ariaLabel('Lucky day')
 			.targetEvent(ev)
-			.ok('Yes, delete user \''+billable.name+'\'')
+			.ok('Yes, delete billable \''+billable.name+'\'')
 			.cancel('No, cancel delete operation')
 
 		$mdDialog.show(confirm)
 			.then(function(){
 				$http.delete('http://localhost:8000/billables/'+ billable.id)
 					.then(function(){
-						$scope.deletion_message = 'Successfully deleted user '+billable.name
+						$scope.deletion_message = 'Successfully deleted billable '+billable.name
 						$state.go('clients', null, {reload: true})
 					})
 				}, function(){
