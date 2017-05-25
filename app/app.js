@@ -18,54 +18,72 @@ angular.module('myApp', [
   'ngMessages',
   'ngTable',
 ]).
-config(['$locationProvider', '$urlRouterProvider', '$stateProvider', function($locationProvider, $urlRouterProvider, $stateProvider) {
+config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', function($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider) {
   $locationProvider.hashPrefix('!');
 
   // $routeProvider.otherwise({redirectTo: 'login'})
   $urlRouterProvider.otherwise('/login')
   var loginState = {
-  	name: 'login',
-  	url: '/login',
-  	templateUrl: '/login/login.html',
-  	controller: 'LoginCtrl'
+	name: 'login',
+	url: '/login',
+	templateUrl: '/login/login.html',
+	controller: 'LoginCtrl'
   }
   $stateProvider.state(loginState)
 
-	
+  $httpProvider.interceptors.push('authInterceptor')
 }])
 
 .factory('User', function(){
   var user
   return {
-    setData: function(data){
-      user = data
-    },
-    getData: function(){
-      return user
-    }
+	setData: function(data){
+	  user = data
+	},
+	getData: function(){
+	  return user
+	}
   }
 })
 
 .factory('BillFormData', function(){
   var billFormData
   return {
-    setData: function(data){
-      billFormData = data
-    },
-    getData: function(data){
-      return billFormData
-    }
+	setData: function(data){
+	  billFormData = data
+	},
+	getData: function(data){
+	  return billFormData
+	}
   }
 })
 
 .factory('Token', function(){
   var token
   return {
-    setData: function(data){
-      token = data
-    },
-    getData: function(){
-      return token
-    }
+	setData: function(data){
+	  token = data
+	},
+	getData: function(){
+	  return token
+	}
   }
+})
+
+.factory('authInterceptor', function($rootScope, $q, $window){
+	return {
+		request: function(config){
+			config.headers = config.headers || {}
+			if ($window.sessionStorage.token) {
+				config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token
+			}
+			return config
+		},
+		response: function(response){
+			if (response.status === 401) {
+				// handle case where user is unauthenticated
+			}
+			return response || $q.when(response)
+		}
+  	}
 })

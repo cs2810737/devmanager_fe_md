@@ -5,13 +5,11 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
 .config(['$routeProvider','$stateProvider', function($routeProvider, $stateProvider) {
 	$stateProvider
 		.state('billables', {
-			// templateUrl: 'billables/billables.html',
-            // url: '/billables/:username',
             url: '/billables/',
 			templateUrl: 'developers/billables/billables.html',
 			controller: 'BillablesCtrl'
 		})
-		.state('create_billable', {
+		.state('project_detail.create_billable', {
             url: 'billables/create/',
 			templateUrl: 'developers/billables/create-billable.html',
             controller: 'BillableDialogCtrl'
@@ -75,16 +73,5 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
 
   	}
 
-    $scope.deleteBillable = function(billable){
-        $.ajax({
-            url: 'http://localhost:8000/billables/'+billable.id,
-            type: 'DELETE',
-            success: function(data){
-                console.log('success')
-            },
-            error: function(error){
-                console.log('error')
-            }
-        })
-    }
+    
 }])

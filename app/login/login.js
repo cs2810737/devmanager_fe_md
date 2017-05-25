@@ -10,7 +10,7 @@ angular.module('myApp.login', ['ngRoute', 'ui.router'])
 // 		})
 // }])
 
-.controller('LoginCtrl', ['Token', 'User', '$http', '$scope', '$state', function(Token, User, $http, $scope, $state) {
+.controller('LoginCtrl', ['Token', 'User', '$http', '$scope', '$state', '$window', function(Token, User, $http, $scope, $state, $window) {
 	
 
 	// $scope.tester = function(){
@@ -29,8 +29,9 @@ angular.module('myApp.login', ['ngRoute', 'ui.router'])
 
 		$http.post("http://localhost:8000/api-token-auth/", credentials)
 			.then(function(auth){
-				Token.setData("Bearer " + auth.token)
+				// Token.setData("Bearer " + auth.token)
 				// $http.defaults.headers.common.Authorization = "Bearer " + auth.token;
+				$window.sessionStorage.token = auth.token
 			}).then($state.go('home', {username: credentials.username}))
 	}
 }]);

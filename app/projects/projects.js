@@ -21,6 +21,7 @@ angular.module('myApp.projects', ['ngRoute'])
 			url: '/project/add',
 			templateUrl: 'projects/create-project.html',
 			controller: 'ProjectsCtrl',
+			parent: 'projects'
 		})
 }])
 
@@ -126,7 +127,7 @@ angular.module('myApp.projects', ['ngRoute'])
 
 
 .controller('ProjectCtrl', ['BillFormData','User', '$http', '$scope', '$location', '$stateParams', '$state', '$mdDialog',function(BillFormData, User, $http, $scope, $location, $stateParams, $state, $mdDialog) {
-	
+	$scope.project_name = $stateParams.project.name
 	$scope.developers = $stateParams.project.developers
 	$scope.billables = $stateParams.project.billables
 	var grand_total_programmer_cost = 0, total_billable_cost = 0
@@ -168,5 +169,25 @@ angular.module('myApp.projects', ['ngRoute'])
             $scope.status = 'You cancelled the dialog.';
         });
     };
-	
+
+    $scope.deleteBillable = function(ev, billable){
+        var confirm = $mdDialog.confirm()
+			.title('Are you sure you would you like to delete billable '+billable.name)
+			.textContent('Careful, you cannot undo this action.')
+			.ariaLabel('Lucky day')
+			.targetEvent(ev)
+			.ok('Yes, delete user \''+billable.name+'\'')
+			.cancel('No, cancel delete operation')
+
+		$mdDialog.show(confirm)
+			.then(function(){
+				$http.delete('http://localhost:8000/billables/'+ billable.id)
+					.then(function(){
+						$scope.deletion_message = 'Successfully deleted user '+billable.name
+						$state.go('clients', null, {reload: true})
+					})
+				}, function(){
+					$scope.action_message = 'Cancelled deletion'
+				})
+    }	
 }])
