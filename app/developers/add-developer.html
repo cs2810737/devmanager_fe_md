@@ -1,0 +1,26 @@
+<script type="text/javascript" src="/projects/multiselect/js/ui.multiselect.js"></script>
+<script type="text/javascript">
+	$(function(){
+		// choose either the full version
+		$(".multiselect").multiselect();
+		// or disable some features
+		$(".multiselect").multiselect({sortable: false, searchable: false});
+	});
+</script>
+
+<select id="countries" class="multiselect" multiple="multiple" name="countries[]">
+	<option value="AFG">Afghanistan</option>
+	<option value="ALB">Albania</option>
+	<option value="DZA">Algeria</option>
+	<option value="AND">Andorra</option>
+	<option value="ARG">Argentina</option>
+	<option value="ARM">Armenia</option>
+	<option value="ABW">Aruba</option>
+	<option value="AUS">Australia</option>
+	<option value="AUT" selected="selected">Austria</option>
+	...
+</select>
+
+<md-dialog>
+	
+</md-dialog>

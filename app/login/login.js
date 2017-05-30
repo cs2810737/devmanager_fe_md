@@ -21,17 +21,21 @@ angular.module('myApp.login', ['ngRoute', 'ui.router'])
 			username: $scope.vm.username,
 			password: $scope.vm.password
 		}
-		$http.get("http://localhost:8000/users/"+$scope.vm.username)
-			.then(function(result){
-				console.log(result.data)
-				User.setData(result.data)
-			})
+		// $http.get("http://localhost:8000/users/"+$scope.vm.username)
+		// 	.then(function(result){
+		// 		console.log(result.data)
+		// 		User.setData(result.data)
+		// 	})
+
 
 		$http.post("http://localhost:8000/api-token-auth/", credentials)
-			.then(function(auth){
+			.then(function(res){
 				// Token.setData("Bearer " + auth.token)
-				// $http.defaults.headers.common.Authorization = "Bearer " + auth.token;
-				$window.sessionStorage.token = auth.token
-			}).then($state.go('home', {username: credentials.username}))
+				// $http.defaults.headers.common.Authorization = "Bearer " + res.data.token;
+				$window.sessionStorage.token = res.data.token
+				$state.go('home', {username: credentials.username})
+			}).then(function (res){
+				console.log('unable to login')
+			})
 	}
 }]);

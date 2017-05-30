@@ -18,7 +18,7 @@ angular.module('myApp', [
   'ngMessages',
   'ngTable',
 ]).
-config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', function($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider) {
+config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', '$mdThemingProvider', function($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider, $mdThemingProvider) {
   $locationProvider.hashPrefix('!');
 
   // $routeProvider.otherwise({redirectTo: 'login'})
@@ -32,6 +32,49 @@ config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvi
   $stateProvider.state(loginState)
 
   $httpProvider.interceptors.push('authInterceptor')
+
+  var darkBlue = {
+  	'50': '#3868bd',
+    '100': '#325daa',
+    '200': '#2d5296',
+    '300': '#274882',
+    '400': '#213d6f',
+    '500': '#1b325b',
+    '600': '#152747',
+    '700': '#0f1c34',
+    '800': '#091220',
+    '900': '#04070c',
+    'A100': '#4775c8',
+    'A200': '#5a84ce',
+    'A400': '#6e93d4',
+    'A700': '#000000',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': ['50', '100', '200', '300', '400', 'A100'],
+    'contrastLightColors': undefined
+
+  }
+  var redBrown = {
+  	'50': '#37180c',
+    '100': '#4c2110',
+    '200': '#622a14',
+    '300': '#773319',
+    '400': '#8c3c1d',
+    '500': '#a14522',
+    '600': '#cb572a',
+    '700': '#d66539',
+    '800': '#da754e',
+    '900': '#df8663',
+    'A100': '#cb572a',
+    'A200': '#b64e26',
+    'A400': '#a14522',
+    'A700': '#e39679'
+  }
+
+  $mdThemingProvider.definePalette('darkBlue', darkBlue)
+  $mdThemingProvider.definePalette('redBrown', redBrown)
+  $mdThemingProvider.theme('default')
+  	.primaryPalette('darkBlue')
+  	.accentPalette('redBrown')
 }])
 
 .factory('User', function(){

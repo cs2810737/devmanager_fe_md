@@ -10,11 +10,11 @@ angular.module('myApp.projects', ['ngRoute'])
 			controller: 'ProjectsCtrl'
 		})
 		.state('project_detail', {
-			url: '/project/detail/',
+			url: '/project/:project_id',
 			templateUrl: 'projects/project_detail.html',
 			controller: 'ProjectCtrl',
 			params: {
-				project: null
+				project_id: null
 			}
 		})
 		.state('create_project', {
@@ -67,9 +67,12 @@ angular.module('myApp.projects', ['ngRoute'])
 	}
 }])
 
-.controller('ProjectsCtrl', ['Token','$http', '$scope', '$location', '$state', '$mdDialog', function(Token, $http, $scope, $location, $state, $mdDialog) {
+.controller('ProjectsCtrl', ['Token','$http', '$scope', '$location', '$state', '$mdDialog', '$window', function(Token, $http, $scope, $location, $state, $mdDialog, $window) {
 	
 	// $http.defaults.headers.common.Authorization = Token.getData()
+	$http.defaults.headers.common.Authorization = "Bearer " + $window.sessionStorage.token;
+	console.log($window.sessionStorage.token)
+
 
 	$http.get('http://localhost:8000/projects/')
 		.then(function(result){
@@ -93,10 +96,8 @@ angular.module('myApp.projects', ['ngRoute'])
   	};
 
 	$scope.viewProject = function(project_id){
-		$http.get('http://localhost:8000/projects/'+project_id)
-			.then(function(result){
-				$state.go('project_detail', {project: result.data})
-			})
+		$state.go('project_detail', {project_id: project_id})
+		
 		
 	}
 
@@ -127,32 +128,40 @@ angular.module('myApp.projects', ['ngRoute'])
 
 
 .controller('ProjectCtrl', ['BillFormData','User', '$http', '$scope', '$location', '$stateParams', '$state', '$mdDialog',function(BillFormData, User, $http, $scope, $location, $stateParams, $state, $mdDialog) {
-	$scope.project_name = $stateParams.project.name
-	$scope.developers = $stateParams.project.developers
-	$scope.billables = $stateParams.project.billables
-	var grand_total_programmer_cost = 0, total_billable_cost = 0
-	for (var i = 0; i < $scope.developers.length; i++) {
-		// $scope.developers[i].cost = $scope.developers[i].hourly_rate *  $scope.developers[i].hours_worked
-		grand_total_programmer_cost = grand_total_programmer_cost + $scope.developers[i].monthly_wage
-	}
-	for (var i = 0; i < $scope.billables.length; i++) {
-		total_billable_cost = total_billable_cost + $scope.billables[i].cost
-	}
-	$scope.grand_total_programmer_cost = grand_total_programmer_cost
-	$scope.total_billable_cost = total_billable_cost
-	
+	$http.get('http://localhost:8000/projects/'+$stateParams.project_id)
+		.then(function(result){
+
+			$scope.project = result.data
+			// console.log($scope.project)
+			$scope.project_name = $scope.project.name
+			$scope.developers = $scope.project.developers
+			$scope.billables = $scope.project.billables
+
+			var grand_total_programmer_cost = 0, total_billable_cost = 0
+			for (var i = 0; i < $scope.developers.length; i++) {
+				// $scope.developers[i].cost = $scope.developers[i].hourly_rate *  $scope.developers[i].hours_worked
+				grand_total_programmer_cost = grand_total_programmer_cost + $scope.developers[i].monthly_wage
+			}
+			for (var i = 0; i < $scope.billables.length; i++) {
+				total_billable_cost = total_billable_cost + $scope.billables[i].cost
+			}
+			$scope.grand_total_programmer_cost = grand_total_programmer_cost
+			$scope.total_billable_cost = total_billable_cost
+
+		})
+
 	// $scope.addBillable = function(){
 	// 	$state.go('create_billable')
 	// }
 
-	var formData = {
-        	project: {
-        		name: $stateParams.project.name,
-        		id: $stateParams.project.id
-        	}
-        }
+	// var formData = {
+ //        	project: {
+ //        		name: $scope.project.name,
+ //        		id: $scope.project.id
+ //        	}
+ //        }
 
-    BillFormData.setData(formData)
+    // BillFormData.setData(formData)
 	$scope.showCreateBillableDialog = function(ev) {
         // Appending dialog to document.body to cover sidenav in docs app
         
@@ -189,5 +198,23 @@ angular.module('myApp.projects', ['ngRoute'])
 				}, function(){
 					$scope.action_message = 'Cancelled deletion'
 				})
-    }	
+    }
+
+    $scope.showAddDevToProjDialog = function(ev) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        console.log('runs')
+        $mdDialog.show({
+            controller: 'DevDialogCtrl',
+            templateUrl: 'developers/add-developer.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose:true
+        })
+        .then(function(answer) {
+            $scope.status = 'You said the information was "' + answer + '".';
+        }, function() {
+            $scope.status = 'You cancelled the dialog.';
+        });
+    };
+
 }])
