@@ -1,26 +1,52 @@
-<script type="text/javascript" src="/projects/multiselect/js/ui.multiselect.js"></script>
-<script type="text/javascript">
-	$(function(){
-		// choose either the full version
-		$(".multiselect").multiselect();
-		// or disable some features
-		$(".multiselect").multiselect({sortable: false, searchable: false});
-	});
-</script>
+<!-- <md-dialog ng-controller=DevDialogCtrl flex='75'>
+	<mdt-table >
+	    <mdt-header-row>
+	    	<mdt-column align-rule="left">Username</mdt-column>
+	      	<mdt-column align-rule="right">Role</mdt-column>
+	      	<mdt-column align-rule="right">Lead</mdt-column>
+	      	<mdt-column align-rule="right">Number of projects currently working on</mdt-column>
+	    </mdt-header-row>
+	    <mdt-row ng-repeat="nutrition in nutritionList">
+	      	<mdt-cell>{{unassigneDev.username}}</mdt-cell>
+	      	<mdt-cell 
+	                editable-field="smallEditDialog"
+	                editable-field-max-length="25">{{unassigneDev.username}}</mdt-cell>
+	      	<mdt-cell>yes</mdt-cell>
+	      	<mdt-cell>2</mdt-cell>
+	    </mdt-row>
+	</mdt-table>
+</md-dialog> -->
 
-<select id="countries" class="multiselect" multiple="multiple" name="countries[]">
-	<option value="AFG">Afghanistan</option>
-	<option value="ALB">Albania</option>
-	<option value="DZA">Algeria</option>
-	<option value="AND">Andorra</option>
-	<option value="ARG">Argentina</option>
-	<option value="ARM">Armenia</option>
-	<option value="ABW">Aruba</option>
-	<option value="AUS">Australia</option>
-	<option value="AUT" selected="selected">Austria</option>
-	...
-</select>
-
-<md-dialog>
-	
+<md-dialog ng-controller=DevDialogCtrl flex='75'>
+	<md-toolbar class="md-table-toolbar md-default">
+		<div class="md-toolbar-tools">
+			<span>Add Developer</span>						
+		</div>			
+	</md-toolbar>
+	<md-table-container>
+		<table md-table md-row-select multiple ng-model="selected" md-progress="promise">
+			<thead md-head>
+				<tr md-row>
+					<th md-column><span>Username</span></th>
+					<th md-column>Role</th>
+					<th md-column>Lead</th>
+					<th md-column>Number of projects currently working on</th>
+				</tr>
+			</thead>
+			<tbody md-body>
+				<tr md-row md-select="unassignedDev" md-select-id='dev' md-auto-select ng-repeat="unassignedDev in unassignedDevs">
+					<td md-cell>{{ unassignedDev.username }}</td>
+					<td md-cell md-edit-dialog ng-click="editComment($event, unassignedDev)">{{ unassignedDev.username }}</td>
+					<td md-cell>Yes</td>
+					<td md-cell>2</td>
+				</tr>
+			</tbody>
+		</table>
+	</md-table-container>
+	<md-table-pagination md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{unassignedDevs.length}}" md-on-paginate="" md-page-select></md-table-pagination>
+	<md-dialog-actions layout="row">
+		<md-button class="addfields" ng-click="addNewChoice()">
+			Add fields
+		</md-button>
+	</md-dialog-actions>
 </md-dialog>

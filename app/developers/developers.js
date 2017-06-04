@@ -11,10 +11,11 @@ angular.module('myApp.developers', ['ngRoute'])
 		})
 }])
 
-.controller('DevDialogCtrl', ['Token', '$http', '$scope', '$state', '$mdDialog', function(Token, $http, $scope, $state, $mdDialog){
+.controller('DevDialogCtrl', ['Token', '$http', '$scope', '$state', '$mdDialog', '$mdEditDialog', function(Token, $http, $scope, $state, $mdDialog, $mdEditDialog){
 
 	// $http.defaults.headers.common.Authorization = Token.getData()
-
+	$scope.selected = [];
+	console.log($scope.unassignedDevs)
 	$scope.hide = function() {
   		$mdDialog.hide();
     };
@@ -50,6 +51,30 @@ angular.module('myApp.developers', ['ngRoute'])
 				$state.go('projects', null, {reload:true})
 				$mdDialog.cancel();
 			})
+	}
+
+	$scope.editComment = function(event, unassignedDev){
+		event.stopPropagation()
+
+		var promise = $mdEditDialog.small({
+			clickOutsideToClose: true,
+			modelValue: unassignedDev.role,
+			placeholder: 'Role',
+			save: function(input){
+				unassignedDev.role = input.$modelValue
+			},
+			targetEvent: event,
+			validators: {
+				'md-maxlength': 30
+			}
+		})
+
+		promise.then(function(ctrl){
+			var input = ctrl.getInput()
+			input.$viewChangeListeners.push(function(){
+				// input.$setValidity()
+			})
+		})
 	}
 }])
 

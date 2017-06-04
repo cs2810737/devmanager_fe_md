@@ -17,12 +17,12 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
 	}])
 
 .controller('BillableDialogCtrl', ['BillFormData', 'User', '$http', '$scope', '$state', '$mdDialog', function(BillFormData, User, $http, $scope, $state, $mdDialog){
-    var formData = BillFormData.getData()
-    $scope.user = User.getData()
-    $scope.developer_id = $scope.user.id
-    $scope.developer_name = $scope.user.username
-    $scope.project_name = formData.project.name
-    $scope.project_id = formData.project.id
+    // var formData = BillFormData.getData()
+    // $scope.user = User.getData()
+    // $scope.developer_id = $scope.user.id
+    // $scope.developer_name = $scope.user.username
+    // $scope.project_name = formData.project.name
+    // $scope.project_id = formData.project.id
     $scope.hide = function() {
         $mdDialog.hide();
     };

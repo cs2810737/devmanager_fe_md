@@ -137,6 +137,64 @@ angular.module('myApp.projects', ['ngRoute'])
 			$scope.developers = $scope.project.developers
 			$scope.billables = $scope.project.billables
 
+			var allDevIds = []
+			var unassignedDevIds = []
+			var assignedDevIds = []
+			var unassignedDevs = []
+			
+
+
+			$http.get('http://localhost:8000/users/')
+				.then(function(result){
+					//get user_id's of all devs
+					for (var i = 0; i < result.data.length; i++) {
+						allDevIds[i] = result.data[i].id
+					}
+					console.log(allDevIds)
+					//get user_id's of already assigned developers
+					for (var i = 0; i < $scope.developers.length; i++) {
+						assignedDevIds[i] = $scope.developers[i].user_id
+					}
+					console.log(assignedDevIds)
+					unassignedDevIds = allDevIds.filter(function(devId){
+						return (!assignedDevIds.includes(devId))
+					})
+					console.log(unassignedDevIds)
+					for (var i = 0; i < result.data.length; i++) {
+						if (unassignedDevIds.includes(result.data[i].id)) {
+							unassignedDevs.push(result.data[i])
+						}
+					}
+					
+					$scope.showAddDevToProjDialog = function(ev) {
+				        $mdDialog.show({
+				            controller: ['$scope', 'unassignedDevs', function($scope, unassignedDevs){
+				            	$scope.unassignedDevs = unassignedDevs
+				            }],
+				            templateUrl: 'developers/add-developer.html',
+				            parent: angular.element(document.body),
+				            targetEvent: ev,
+				            locals: {
+				            	unassignedDevs: unassignedDevs
+				            },
+				            clickOutsideToClose:true
+				        })
+				        .then(function(answer) {
+				            $scope.status = 'You said the information was "' + answer + '".';
+				        }, function() {
+				            $scope.status = 'You cancelled the dialog.';
+				        });
+				    };
+				})
+
+
+
+
+
+			for (var i = 0; i < $scope.billables.length; i++) {
+				$scope.billables[i].reg_date = new Date($scope.billables[i].reg_date).toDateString()
+			}
+
 			var grand_total_programmer_cost = 0, total_billable_cost = 0
 			for (var i = 0; i < $scope.developers.length; i++) {
 				// $scope.developers[i].cost = $scope.developers[i].hourly_rate *  $scope.developers[i].hours_worked
@@ -147,6 +205,45 @@ angular.module('myApp.projects', ['ngRoute'])
 			}
 			$scope.grand_total_programmer_cost = grand_total_programmer_cost
 			$scope.total_billable_cost = total_billable_cost
+
+
+			$scope.showCreateBillableDialog = function(ev) {
+		        // Appending dialog to document.body to cover sidenav in docs app
+		        
+		        $mdDialog.show({
+		            controller: 'BillableDialogCtrl',
+		            templateUrl: 'developers/billables/create-billable.html',
+		            parent: angular.element(document.body),
+		            targetEvent: ev,
+		            clickOutsideToClose:true
+		        })
+		        .then(function(answer) {
+		            $scope.status = 'You said the information was "' + answer + '".';
+		        }, function() {
+		            $scope.status = 'You cancelled the dialog.';
+		        });
+		    };
+
+		    $scope.deleteBillable = function(ev, billable){
+		        var confirm = $mdDialog.confirm()
+					.title('Are you sure you would you like to delete billable '+billable.name)
+					.textContent('Careful, you cannot undo this action.')
+					.ariaLabel('Lucky day')
+					.targetEvent(ev)
+					.ok('Yes, delete billable \''+billable.name+'\'')
+					.cancel('No, cancel delete operation')
+
+				$mdDialog.show(confirm)
+					.then(function(){
+						$http.delete('http://localhost:8000/billables/'+ billable.id)
+							.then(function(){
+								$scope.deletion_message = 'Successfully deleted billable '+billable.name
+								$state.go('clients', null, {reload: true})
+							})
+						}, function(){
+							$scope.action_message = 'Cancelled deletion'
+						})
+		    }
 
 		})
 
@@ -162,59 +259,6 @@ angular.module('myApp.projects', ['ngRoute'])
  //        }
 
     // BillFormData.setData(formData)
-	$scope.showCreateBillableDialog = function(ev) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        
-        $mdDialog.show({
-            controller: 'BillableDialogCtrl',
-            templateUrl: 'developers/billables/create-billable.html',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose:true
-        })
-        .then(function(answer) {
-            $scope.status = 'You said the information was "' + answer + '".';
-        }, function() {
-            $scope.status = 'You cancelled the dialog.';
-        });
-    };
-
-    $scope.deleteBillable = function(ev, billable){
-        var confirm = $mdDialog.confirm()
-			.title('Are you sure you would you like to delete billable '+billable.name)
-			.textContent('Careful, you cannot undo this action.')
-			.ariaLabel('Lucky day')
-			.targetEvent(ev)
-			.ok('Yes, delete billable \''+billable.name+'\'')
-			.cancel('No, cancel delete operation')
-
-		$mdDialog.show(confirm)
-			.then(function(){
-				$http.delete('http://localhost:8000/billables/'+ billable.id)
-					.then(function(){
-						$scope.deletion_message = 'Successfully deleted billable '+billable.name
-						$state.go('clients', null, {reload: true})
-					})
-				}, function(){
-					$scope.action_message = 'Cancelled deletion'
-				})
-    }
-
-    $scope.showAddDevToProjDialog = function(ev) {
-        // Appending dialog to document.body to cover sidenav in docs app
-        console.log('runs')
-        $mdDialog.show({
-            controller: 'DevDialogCtrl',
-            templateUrl: 'developers/add-developer.html',
-            parent: angular.element(document.body),
-            targetEvent: ev,
-            clickOutsideToClose:true
-        })
-        .then(function(answer) {
-            $scope.status = 'You said the information was "' + answer + '".';
-        }, function() {
-            $scope.status = 'You cancelled the dialog.';
-        });
-    };
+	
 
 }])

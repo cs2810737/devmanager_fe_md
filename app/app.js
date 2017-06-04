@@ -17,6 +17,7 @@ angular.module('myApp', [
   'ngAria',
   'ngMessages',
   'ngTable',
+  'md.data.table'
 ]).
 config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', '$mdThemingProvider', function($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider, $mdThemingProvider) {
   $locationProvider.hashPrefix('!');
@@ -67,14 +68,27 @@ config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvi
     'A100': '#cb572a',
     'A200': '#b64e26',
     'A400': '#a14522',
-    'A700': '#e39679'
+    'A700': '#e39679',
+    'contrastDefaultColor': 'dark',
+    'contrastDarkColors': undefined,
+    'contrastLightColors': ['50', '100', '200', '300', '400', 'A100']
   }
 
   $mdThemingProvider.definePalette('darkBlue', darkBlue)
   $mdThemingProvider.definePalette('redBrown', redBrown)
   $mdThemingProvider.theme('default')
-  	.primaryPalette('darkBlue')
-  	.accentPalette('redBrown')
+  	.primaryPalette('darkBlue', {
+  		'default': '500',
+  		'hue-1': '100',
+  		'hue-2': '600',
+  		'hue-3': 'A100'
+  	})
+  	.accentPalette('redBrown', {
+  		'default': '500',
+  		'hue-1': '100',
+  		'hue-2': '600',
+  		'hue-3': 'A100'
+  	})
 }])
 
 .factory('User', function(){
