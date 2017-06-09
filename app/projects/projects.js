@@ -142,6 +142,13 @@ angular.module('myApp.projects', ['ngRoute'])
 			var assignedDevIds = []
 			var unassignedDevs = []
 			
+			// var today = new Date()
+			// var oneDay = 24*60*60*1000
+			// var startDate = new Date($scope.project.start_date)
+			// var projectDurationDays = Math.round(Math.abs(today.getTime() - startDate.getTime())/ oneDay)
+			// var daysInMonth = 365.2422/12
+			// var projectDurationMonths = projectDurationDays/daysInMonth
+			// console.log($scope.developers)
 
 
 			$http.get('http://localhost:8000/users/')
@@ -185,6 +192,27 @@ angular.module('myApp.projects', ['ngRoute'])
 				            $scope.status = 'You cancelled the dialog.';
 				        });
 				    };
+
+				    $scope.offsetBillable = function(ev, billable){
+				    	console.log('reaches here')
+				        $mdDialog.show({
+				            controller: ['$scope', 'billable', function($scope, billable){
+				                $scope.billable = billable
+				            }],
+				            templateUrl: 'developers/billables/offset-billable.html',
+				            parent: angular.element(document.body),
+				            targetEvent: ev,
+				            locals: {
+				                billable: billable
+				            },
+				            clickOutsideToClose:true
+				        })
+				        .then(function(answer) {
+				            $scope.status = 'You said the information was "' + answer + '".';
+				        }, function() {
+				            $scope.status = 'You cancelled the dialog.';
+				        });
+				    }
 				})
 
 

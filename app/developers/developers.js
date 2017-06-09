@@ -56,7 +56,7 @@ angular.module('myApp.developers', ['ngRoute'])
 	$scope.editComment = function(event, unassignedDev){
 		event.stopPropagation()
 
-		var promise = $mdEditDialog.small({
+		var promise = $mdEditDialog.large({
 			clickOutsideToClose: true,
 			modelValue: unassignedDev.role,
 			placeholder: 'Role',

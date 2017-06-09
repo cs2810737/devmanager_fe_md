@@ -1,16 +1,10 @@
-<style type="text/css">
-	.md-table-pagination .label {
-		color: rgba(0, 0, 0, 87%) !important;
-	}
-</style>
-
-<md-dialog ng-controller=DevDialogCtrl layout-fill flex='100'>
+<md-dialog ng-controller=DevDialogCtrl flex='80'>
 	<md-toolbar class="md-table-toolbar md-default">
 		<div class="md-toolbar-tools">
-			<span>Select Developers to add to Project</span>						
+			<span>Offset Bill</span>						
 		</div>			
 	</md-toolbar>
-	<md-table-container >
+	<md-card>
 		<label>List of unassigned developers</label>
 		<table md-table md-row-select multiple ng-model="selected" md-progress="promise">
 			<thead md-head>
@@ -30,7 +24,7 @@
 				</tr>
 			</tbody>
 		</table>
-	</md-table-container>
+	</md-card>
 	<md-table-pagination md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{unassignedDevs.length}}" md-on-paginate="" md-page-select></md-table-pagination>
 	<md-dialog-actions layout="row">
 		<md-button class="addfields" ng-click="cancel()">
@@ -41,24 +35,3 @@
 		</md-button>
 	</md-dialog-actions>
 </md-dialog>
-
-
-<!-- <md-dialog ng-controller=DevDialogCtrl flex='75'>
-	<mdt-table >
-	    <mdt-header-row>
-	    	<mdt-column align-rule="left">Username</mdt-column>
-	      	<mdt-column align-rule="right">Role</mdt-column>
-	      	<mdt-column align-rule="right">Lead</mdt-column>
-	      	<mdt-column align-rule="right">Number of projects currently working on</mdt-column>
-	    </mdt-header-row>
-	    <mdt-row ng-repeat="nutrition in nutritionList">
-	      	<mdt-cell>{{unassigneDev.username}}</mdt-cell>
-	      	<mdt-cell 
-	                editable-field="smallEditDialog"
-	                editable-field-max-length="25">{{unassigneDev.username}}</mdt-cell>
-	      	<mdt-cell>yes</mdt-cell>
-	      	<mdt-cell>2</mdt-cell>
-	    </mdt-row>
-	</mdt-table>
-</md-dialog> -->
-

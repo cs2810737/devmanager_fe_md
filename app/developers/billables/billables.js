@@ -52,6 +52,8 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
                 $mdDialog.cancel();
             })
     }
+
+    
 }])
 
 .controller('BillablesCtrl', ['Token', '$http', '$scope', '$location', '$state', '$mdDialog', function(Token, $http, $scope, $location, $state, $mdDialog){
