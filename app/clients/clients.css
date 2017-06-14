@@ -1,4 +1,4 @@
-
+/*
 th {
 	background: #1b325b;
 	text-transform: uppercase;
@@ -46,7 +46,7 @@ input[type="submit"]:hover {
 
 .wide {
     width: 100%
-}
+}*/
 /*.table-striped > tbody > tr:nth-child(odd) > td {
 	background-color: #1b325b;
 }

@@ -1,37 +1,30 @@
-<md-dialog ng-controller=DevDialogCtrl flex='80'>
-	<md-toolbar class="md-table-toolbar md-default">
-		<div class="md-toolbar-tools">
-			<span>Offset Bill</span>						
-		</div>			
+
+
+<md-dialog ng-controller=DevDialogCtrl>
+	<md-toolbar class="md-default">
+		<div layout='row'>
+			<h4 style="text-transform: uppercase;font-family: 'Open Sans Condensed';">Offset Bill</h4>	
+		</div>
+		
 	</md-toolbar>
-	<md-card>
-		<label>List of unassigned developers</label>
-		<table md-table md-row-select multiple ng-model="selected" md-progress="promise">
-			<thead md-head>
-				<tr md-row>
-					<th md-column style="color: #FFF"><span>Username</span></th>
-					<th md-column style="color: #FFF">Role</th>
-					<th md-column style="color: #FFF">Lead</th>
-					<th md-column style="color: #FFF">Number of projects currently working on</th>
-				</tr>
-			</thead>
-			<tbody md-body>
-				<tr md-row md-select="unassignedDev" md-select-id='dev' md-auto-select ng-repeat="unassignedDev in unassignedDevs">
-					<td md-cell>{{ unassignedDev.username }}</td>
-					<td md-cell md-edit-dialog ng-click="editComment($event, unassignedDev)" ng-class="{'md-placeholder': !unassignedDev.role}">{{ unassignedDev.role || 'Assign role' }}</td>
-					<td md-cell>Yes</td>
-					<td md-cell>2</td>
-				</tr>
-			</tbody>
-		</table>
+	<md-card layout='row'>
+		<md-input-container class="md-block md-icon-float">
+            <md-icon class="material-icons">local_atm</md-icon>
+            <input ng-model="cost" type="number" min="0.00" value="5000" placeholder="amount...">
+        </md-input-container>
+        <md-input-container class="md-block md-icon-float">
+            <md-icon class="material-icons">comment</md-icon>
+            <textarea ng-model="description" placeholder="comment..." onkeyup="adjust_textarea(this)"></textarea>
+        </md-input-container>
+
 	</md-card>
-	<md-table-pagination md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{unassignedDevs.length}}" md-on-paginate="" md-page-select></md-table-pagination>
+	
 	<md-dialog-actions layout="row">
 		<md-button class="addfields" ng-click="cancel()">
 			Cancel
 		</md-button>
 		<md-button class="addfields" ng-click="addNewChoice()">
-			Add Selected Developers
+			Offset Bill
 		</md-button>
 	</md-dialog-actions>
 </md-dialog>

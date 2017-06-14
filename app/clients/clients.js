@@ -83,12 +83,12 @@ angular.module('myApp.clients', ['ngRoute'])
 
 	$scope.deleteClient = function(ev, client){
 		var confirm = $mdDialog.confirm()
-			.title('Are you sure you would you like to delete user '+client.name)
-			.textContent('Careful, you cannot undo this action.')
+			// .title('Are you sure you would you like to delete user '+client.name)
+			.textContent('Remove client '+client.name+'?')
 			.ariaLabel('Lucky day')
 			.targetEvent(ev)
-			.ok('Yes, delete user \''+client.name+'\'')
-			.cancel('No, cancel delete operation')
+			.ok('Delete')
+			.cancel('Cancel')
 
 		$mdDialog.show(confirm)
 			.then(function(){

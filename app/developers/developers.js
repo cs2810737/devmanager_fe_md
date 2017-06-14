@@ -15,7 +15,6 @@ angular.module('myApp.developers', ['ngRoute'])
 
 	// $http.defaults.headers.common.Authorization = Token.getData()
 	$scope.selected = [];
-	console.log($scope.unassignedDevs)
 	$scope.hide = function() {
   		$mdDialog.hide();
     };
@@ -28,54 +27,43 @@ angular.module('myApp.developers', ['ngRoute'])
     	$mdDialog.hide(answer);
     };  
 
-    $http.get('http://localhost:8000/leads/')
-    	.then(function(result){
-    		$scope.leads = result.data
-    	})
+    // $http.get('http://localhost:8000/leads/')
+    // 	.then(function(result){
+    // 		$scope.leads = result.data
+    // 	})
 
     $http.get('http://localhost:8000/clients/')
     	.then(function(result){
     		$scope.clients = result.data
     	})
 
-    $scope.addDeveloper = function(){
-		var data = {
-			'name': $scope.name,
-			'start_date': $scope.start_date,
-			'client': $scope.client,
-			'lead': $scope.lead,
-			'description': $scope.description
-		}
-		$http.post('http://localhost:8000/projects/', data)
-			.then(function(){
-				$state.go('projects', null, {reload:true})
-				$mdDialog.cancel();
-			})
-	}
-
-	$scope.editComment = function(event, unassignedDev){
-		event.stopPropagation()
-
-		var promise = $mdEditDialog.large({
-			clickOutsideToClose: true,
-			modelValue: unassignedDev.role,
-			placeholder: 'Role',
-			save: function(input){
-				unassignedDev.role = input.$modelValue
-			},
-			targetEvent: event,
-			validators: {
-				'md-maxlength': 30
+    $scope.addDevelopers = function(){
+		// var data = {
+		// 	'name': $scope.name,
+		// 	'start_date': $scope.start_date,
+		// 	'client': $scope.client,
+		// 	'lead': $scope.lead,
+		// 	'description': $scope.description
+		// }
+		// $http.post('http://localhost:8000/projects/', data)
+		// 	.then(function(){
+		// 		$state.go('projects', null, {reload:true})
+		// 		$mdDialog.cancel();
+		// 	})
+		for (var i = 0; i < $scope.selected.length; i++) {
+			var membership = {
+				'start_date': new Date().toISOString().slice(0, 10),
+				'role': 'Click here to assign role',
+				'developer': $scope.selected[i].id,
+				'project': $scope.project.id
 			}
-		})
-
-		promise.then(function(ctrl){
-			var input = ctrl.getInput()
-			input.$viewChangeListeners.push(function(){
-				// input.$setValidity()
-			})
-		})
+			// console.log($scope.selected[i])
+			$http.post('http://localhost:8000/devmembership/', membership)
+		}
+		console.log($scope.selected)
 	}
+
+	
 }])
 
 .controller('DevelopersCtrl', ['Token', '$http', '$scope', '$location', function(Token, $http, $scope, $location) {

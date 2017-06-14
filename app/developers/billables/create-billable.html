@@ -125,62 +125,68 @@
 <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
 
-<div ng-controller="BillableDialogCtrl" layout="column"  layout-align="space-around" layout-padding="layout-padding" ng-cloak>
+<div ng-controller="BillableDialogCtrl" layout="column" ng-cloak>
 
-    <br/>
     <md-content class="md-no-momentum" style="width: 800px">
         <md-toolbar >
             <div class="md-toolbar-tools">
-                <h2>Register Billable<a id="cancelClient" style="float: right;" ng-click="cancel()">
-                    <span class="glyphicon glyphicon-remove"></span>
+                <h2 style="text-transform: uppercase;font-family: 'Open Sans Condensed';">Register Billable<a id="cancelClient" style="float: right;" ng-click="cancel()">
                 </a></h2>
             </div>
         </md-toolbar>
-        <md-input-container class="md-icon-float md-block">
-            <!-- Use floating label instead of placeholder -->
-            <label>name...</label>
-            <md-icon class="material-icons">format_quote</md-icon>
-            <input ng-model="name" type="text">
-        </md-input-container>
-
-        <div layout="row" flex=''>
-            <md-input-container class="md-block md-icon-float" flex='50'>
-                <md-icon class="material-icons">build</md-icon>
-                <!-- <input ng-model="client" type="text" placeholder="client..."> -->
-                <md-select ng-model="project_id" placeholder="project...">
-                    <md-option >{{project_name}}</md-option>
-                </md-select>
+        <md-card>
+            <md-input-container class="md-icon-float md-block">
+                <!-- Use floating label instead of placeholder -->
+                <label>name...</label>
+                <md-icon class="material-icons">format_quote</md-icon>
+                <input ng-model="name" type="text">
             </md-input-container>
 
-            <md-input-container class="md-block md-icon-float" flex='50'>
-                <md-icon class="material-icons">person</md-icon>
-                <!-- <input ng-model="lead" type="text" placeholder="lead developer..."> -->
-                <md-select ng-model="developer_id" placeholder="developer..." class="md-no-underline">
-                    <md-option >{{developer_name}}</md-option>
-                </md-select>
+            <div layout="row" flex=''>
+                <md-input-container class="md-block md-icon-float" flex='50'>
+                    <md-icon class="material-icons">build</md-icon>
+                    <!-- <input ng-model="client" type="text" placeholder="client..."> -->
+                    <md-select ng-model="project_id" placeholder="project...">
+                        <md-option >{{project_name}}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block md-icon-float" flex='50'>
+                    <md-icon class="material-icons">person</md-icon>
+                    <!-- <input ng-model="lead" type="text" placeholder="lead developer..."> -->
+                    <md-select ng-model="developer_id" placeholder="developer..." class="md-no-underline">
+                        <md-option >{{developer_name}}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+
+            <md-input-container class="md-block md-icon-float">
+                
+                <md-icon class="material-icons">local_atm</md-icon>
+                <input ng-model="cost" type="number" min="0.00" step="100" id="sample3" placeholder="cost...">
+                
             </md-input-container>
-        </div>
 
-        <md-input-container class="md-block md-icon-float">
-            
-            <md-icon class="material-icons">local_atm</md-icon>
-            <input ng-model="cost" type="number" min="0.00" step="100" id="sample3" placeholder="cost...">
-            
-        </md-input-container>
+            <md-input-container class="md-block md-icon-float">
+                <md-icon class="material-icons">description</md-icon>
+                <textarea ng-model="description" placeholder="description..." onkeyup="adjust_textarea(this)"></textarea>
+            </md-input-container>
 
-        <md-input-container class="md-block md-icon-float">
-            <md-icon class="material-icons">description</md-icon>
-            <textarea ng-model="description" placeholder="description..." onkeyup="adjust_textarea(this)"></textarea>
-        </md-input-container>
+            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
+                <span class="mdl-switch__label">bill recurrent?</span>
+                <input type="checkbox" ng-model="recurring" placeholder="bill recurrent?" checked style="float: right;" name="recurring">
+            </label>
+        </md-card>
+        
 
-        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
-            <span class="mdl-switch__label">bill recurrent?</span>
-            <input type="checkbox" ng-model="recurring" placeholder="bill recurrent?" checked style="float: right;" name="recurring">
-        </label>
-
-        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" ng-click=putBillable()>
-            <i class="material-icons">add</i>
-        </button>
+        <md-dialog-actions layout="row">
+            <md-button class="addfields" ng-click="cancel()">
+                Cancel
+            </md-button>
+            <md-button class="addfields" ng-click="putBillable()">
+                Add Billable
+            </md-button>
+        </md-dialog-actions>
 
     </md-content>
 </div>

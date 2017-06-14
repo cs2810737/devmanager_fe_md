@@ -4,28 +4,36 @@
 	}
 </style>
 
-<md-dialog ng-controller=DevDialogCtrl layout-fill flex='100'>
+<md-dialog ng-controller=DevDialogCtrl flex='80'>
 	<md-toolbar class="md-table-toolbar md-default">
 		<div class="md-toolbar-tools">
-			<span>Select Developers to add to Project</span>						
+			<span>Select Developers to add to Project</span>
+			<span class="glyphicons glyphicons-remove"></span>
+			<!-- <span flex=''></span>
+
+			<div class="md-accent">
+				<i class="material-icons ">clear</i>
+
+
+			</div> -->
+								
 		</div>			
 	</md-toolbar>
 	<md-table-container >
-		<label>List of unassigned developers</label>
+		<label>Developers yet to be assigned to this project</label>
 		<table md-table md-row-select multiple ng-model="selected" md-progress="promise">
 			<thead md-head>
 				<tr md-row>
+					<th md-column style="color: #FFF"><span>ID</span></th>
 					<th md-column style="color: #FFF"><span>Username</span></th>
-					<th md-column style="color: #FFF">Role</th>
-					<th md-column style="color: #FFF">Lead</th>
 					<th md-column style="color: #FFF">Number of projects currently working on</th>
 				</tr>
 			</thead>
 			<tbody md-body>
 				<tr md-row md-select="unassignedDev" md-select-id='dev' md-auto-select ng-repeat="unassignedDev in unassignedDevs">
+					<td md-cell>{{unassignedDev.id}}</td>
 					<td md-cell>{{ unassignedDev.username }}</td>
-					<td md-cell md-edit-dialog ng-click="editComment($event, unassignedDev)" ng-class="{'md-placeholder': !unassignedDev.role}">{{ unassignedDev.role || 'Assign role' }}</td>
-					<td md-cell>Yes</td>
+					
 					<td md-cell>2</td>
 				</tr>
 			</tbody>
@@ -36,7 +44,7 @@
 		<md-button class="addfields" ng-click="cancel()">
 			Cancel
 		</md-button>
-		<md-button class="addfields" ng-click="addNewChoice()">
+		<md-button class="addfields" ng-click="addDevelopers()">
 			Add Selected Developers
 		</md-button>
 	</md-dialog-actions>

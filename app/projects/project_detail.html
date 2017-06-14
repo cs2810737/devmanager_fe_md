@@ -2,7 +2,8 @@
 
 <style type="text/css">
 	table#billablesTable tr td a.button { display:none;}
-  table#billablesTable tr:hover td a.button { display:inline-block;}
+  	table#billablesTable tr:hover td a.button { display:inline-block;}
+
 </style>
 
 <div style="top: 0; right: 0; left: 0;">
@@ -27,105 +28,106 @@
 	      	</md-content>
 	    </md-sidenav>
 
-	    <div ng-cloak>
-		  <md-content>
-		  	<md-card flex="flex">
-				<h5 style="line-height: 10px">{{ project_name }}</h5>
-				<div layout='row'>
-					
+	    <div ng-controller='ProjectCtrl' ng-cloak>
+		  	<md-content>
+			  	<md-card flex="flex">
+					<h5 style="line-height: 10px">{{ project_name }}</h5>
+					<div layout='row'>
+						
+		        		
+					</div>
 	        		
-				</div>
-        		
-			</md-card>
-			<md-card>
-		    <md-tabs md-dynamic-height md-border-bottom>
-		      <md-tab label="Developers">
-		        <md-content class="md-padding">
-		        	<md-card-content >
-		        		<table class="mdl-data-table mdl-js-data-table table-striped" id="developersTable" show-filter="true" style="width: 100%">
-		        			<thead>
-		        				<tr>
-								    <th style="color: #fff">Name</th>
-								    <th style="color: #fff">Hourly Rate</th>
-								    <th style="color: #fff">Hours Worked</th>
-								    <th style="color: #fff">Total Developer Cost</th>
-							  	</tr>
-	        				</thead>
-							<tbody>
-								<tr ng-repeat="developer in developers" style="line-height: 40px">
-							        <td title="'Name'"  sortable="'name'">{{developer.user_id}}</td>
-							        <td title="'hourly_rate'" >{{developer.hourly_rate}}</td>
-							        <td title='hours_worked'> {{developer.hours_worked}} </td>
-							        <td title='total_dev_cost'> {{developer.monthly_wage }} </td>
-							    </tr>
-							</tbody>
-	        			</table>
-	        			<md-input-container>
-	        				
-	        				<button ng-click="showAddDevToProjDialog()"><md-icon class="material-icons">group_add</md-icon></button>	
-	        			</md-input-container>
-	        			
-						<p style="font-style: italic;">Grand total programmer cost: {{grand_total_programmer_cost}}</p>
-        			</md-card-content>
-		        </md-content>
-		      </md-tab>
-		      <md-tab label="Billables">
-		        <md-content class="md-padding">
-		        	<md-card-content >
-		        		<md-table-container >
-							<table md-table md-row-select multiple ng-model="selected" md-progress="promise" id="billablesTable">
-								<thead md-head>
-									<tr md-row>
-										<th md-column style="color: #FFF"><span>Billable Name</span></th>
-										<th md-column style="color: #FFF"><span>Registration Date</span></th>
-										<th md-column style="color: #FFF"><span>Description</span></th>
-										<th md-column style="color: #FFF"><span>Unit Cost</span></th>
-										<th md-column style="color: #FFF"><span>Recurring ?</span></th>
-										<th md-column style="color: #FFF"><span>Final Cost</span></th>
-										<th md-column style="color: #FFF"><span>Amount Cleared</span></th>
-									</tr>
-								</thead>
-								<tbody md-body>
-									<tr md-row md-select="billable" md-select-id='bill' md-auto-select ng-repeat="billable in billables">
-										<td filter="{ name: 'text'}" sortable="'name'">
-								        	{{billable.name}}
-								        </td>
-									    <td title='reg_date'> {{billable.reg_date}} </td>
-									    <td title="description"> {{billable.description}} </td>
-									    <td > {{billable.cost}} </td>
-								        <td title='recurring'> {{billable.recurring}} </td>
-							
-								        
-								        <td > {{billable.cost}} </td>
-								        <td > {{billable.cost}}
-								        	<a class="button" ng-click="deleteBillable($event, billable)" style="float: right;">
-								        		<md-tooltip md-direction="bottom">Remove Bill</md-tooltip>
-									            <i class="material-icons">delete</i>
-								        	</a>
-								        	<a class="button" ng-click="offsetBillable($event, billable)" style="float: right;">
-								        		<md-tooltip md-direction="bottom">Offset Bill</md-tooltip>
-									            <i class="material-icons">local_atm</i>
-								        	</a>
-								       
-								        </td>
-									</tr>
-								</tbody>
-							</table>
-						</md-table-container>
-						<md-table-pagination md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{billables.length}}" md-on-paginate="" md-page-select></md-table-pagination>
-		        			
-	        			
-							
-							<p style="font-style: italic;">Billables Grand total cost: {{total_billable_cost}}</p>
-		        		</md-card-content>
-		        		<md-card-actions layout="row">
-	        				<md-button ng-click="showCreateBillableDialog()">Add billable</md-button>
-	        			</md-card-actions>
-		        </md-content>
-		      </md-tab>
-		    </md-tabs>
-		    </md-card>
-		  </md-content>
+				</md-card>
+				<md-card>
+		    		<md-tabs md-dynamic-height md-border-bottom>
+		      			<md-tab label="Developers">
+		        			<md-content class="md-padding">
+			        			<md-card-content >
+				        			<table class="mdl-data-table mdl-js-data-table table-striped" id="developersTable" show-filter="true" style="width: 100%">
+				        				<thead>
+				        					<tr>
+											    <th style="color: #fff">Name</th>
+											    <th style="color: #fff">Role</th>
+											    <th style="color: #fff">Duration spent on project (days)</th>
+											    <th style="color: #fff">Total Developer Cost</th>
+										  	</tr>
+				        				</thead>
+										<tbody>
+											<tr ng-repeat="developer in developers" style="line-height: 40px">
+										        <td title="'Name'"  sortable="'name'">{{developer.username}}</td>
+										        <td md-cell md-edit-dialog ng-click="editComment($event, unassignedDev)" ng-class="{'md-placeholder': !unassignedDev.role}">{{ unassignedDev.role || 'Assign role' }}</td>
+										        <td title="'hourly_rate'" >{{developer.duration}}</td>
+										        <td title='total_dev_cost'> {{developer.compensation }} </td>
+										    </tr>
+										</tbody>
+				        			</table>								
+	        					</md-card-content>
+	        					<p style="font-style: italic;">Grand total programmer cost: {{grand_total_programmer_cost}}</p>
+	        					<md-card-actions>
+	        						<div class="dialog-demo-content" layout="row" layout-align="center">
+					        			<md-button ng-click="showAddDevToProjDialog()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect md-accent" id="show_project_form">
+					        				<md-tooltip>Add Developer</md-tooltip>
+								            <i class="material-icons">add</i>
+								        </md-button>
+							        </div>
+	        					</md-card-actions>
+	        					
+		        			</md-content>
+		      			</md-tab>
+		      			<md-tab label="Billables">
+					        <md-content class="md-padding">
+					        	<md-card-content >
+					        		<md-table-container >
+										<table md-table md-row-select multiple ng-model="selected" md-progress="promise" id="billablesTable">
+											<thead md-head>
+												<tr md-row>
+													<th md-column style="color: #FFF"><span>Billable Name</span></th>
+													<th md-column style="color: #FFF"><span>Registration Date</span></th>
+													<th md-column style="color: #FFF"><span>Description</span></th>
+													<th md-column style="color: #FFF"><span>Unit Cost</span></th>
+													<th md-column style="color: #FFF"><span>Recurring ?</span></th>
+													<th md-column style="color: #FFF"><span>Final Cost</span></th>
+													<th md-column style="color: #FFF"><span>Amount Cleared</span></th>
+												</tr>
+											</thead>
+											<tbody md-body>
+												<tr md-row md-select="billable" md-select-id='bill' md-auto-select ng-repeat="billable in billables">
+													<td filter="{ name: 'text'}" sortable="'name'">
+											        	{{billable.name}}
+											        </td>
+												    <td title='reg_date'> {{billable.reg_date}} </td>
+												    <td title="description"> {{billable.description}} </td>
+												    <td > {{billable.cost}} </td>
+											        <td title='recurring'> {{billable.recurring}} </td>
+										
+											        
+											        <td > {{billable.cost}} </td>
+											        <td > {{billable.cost}}
+											        	<a class="button" ng-click="deleteBillable($event, billable)" style="float: right;">
+											        		<md-tooltip md-direction="bottom">Remove Bill</md-tooltip>
+												            <i class="material-icons">delete</i>
+											        	</a>
+											        	<a class="button" ng-click="offsetBillable($event, billable)" style="float: right;">
+											        		<md-tooltip md-direction="bottom">Offset Bill</md-tooltip>
+												            <i class="material-icons">local_atm</i>
+											        	</a>
+											       
+											        </td>
+												</tr>
+											</tbody>
+										</table>
+									</md-table-container>
+									<md-table-pagination style='color: #757575' md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{billables.length}}" md-on-paginate="" md-page-select></md-table-pagination>	
+									<p style="font-style: italic;">Billables Grand total cost: {{total_billable_cost}}</p>
+					        	</md-card-content>
+					        	<md-card-actions layout="row">
+				        			<md-button ng-click="showCreateBillableDialog()" >Add billable</md-button>
+				        		</md-card-actions>
+					        </md-content>
+					    </md-tab>
+		    		</md-tabs>
+		    	</md-card>
+		  	</md-content>
 		</div>
 
 		<!-- <div ng-controller='BillablesCtrl'> -->

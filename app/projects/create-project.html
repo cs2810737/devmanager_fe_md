@@ -11,44 +11,44 @@
     }
 </script> -->
 
-<div ng-controller="ProjectDialogCtrl" layout="column"  layout-align="space-around" layout-padding="layout-padding" ng-cloak>
-
-    <br/>
+<md-dialog ng-controller="ProjectDialogCtrl" layout="column"   ng-cloak>
     <md-content class="md-no-momentum" style="width: 800px">
         <md-toolbar >
             <div class="md-toolbar-tools">
-                <h2>Register Project<a id="cancelClient" style="float: right;" ng-click="cancel()">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </a></h2>
+                <h2 style="text-transform: uppercase;font-family: 'Open Sans Condensed';">Register Project</h2>
             </div>
         </md-toolbar>
-        <md-input-container class="md-icon-float md-block">
-            <!-- Use floating label instead of placeholder -->
-            <label>name...</label>
-            <md-icon class="material-icons">format_quote</md-icon>
-            <input ng-model="name" type="text">
-        </md-input-container>
-
-        <md-input-container flex='100'>
-            <label>start date...</label>
-            <md-datepicker ng-model="start_date"></md-datepicker>
-        </md-input-container>
-
-        <div layout="row" flex=''>
-            <md-input-container class="md-block md-icon-float" flex='50'>
+        <md-card layout-align="space-around" layout-padding="layout-padding">
+        <div layout='row'>
+            <md-input-container class="md-icon-float md-block" flex>
+                <!-- Use floating label instead of placeholder -->
+                <label>name...</label>
+                <md-icon class="material-icons">format_quote</md-icon>
+                <input ng-model="project.name" type="text">
+            </md-input-container>
+            <md-input-container class="md-block md-icon-float" flex>
                 <md-icon class="material-icons">person</md-icon>
                 <!-- <input ng-model="client" type="text" placeholder="client..."> -->
-                <md-select ng-model="client" placeholder="client...">
-                    <md-option ng-repeat="client in clients" value="client">{{client.name}}</md-option>
+                <md-select ng-model="project.client" placeholder="client...">
+                    <md-option ng-repeat="client in clients" value={{client.id}}>{{client.name}}</md-option>
                 </md-select>
             </md-input-container>
+        </div>
 
-            <md-input-container class="md-block md-icon-float" flex='50'>
+        <div layout="row" flex=''>
+
+            <md-input-container class="md-block md-icon-float" flex=''>
                 <md-icon class="material-icons">person</md-icon>
                 <!-- <input ng-model="lead" type="text" placeholder="lead developer..."> -->
-                <md-select ng-model="lead" placeholder="lead..." class="md-no-underline">
-                    <md-option ng-repeat="lead in leads" value="lead">{{lead}}</md-option>
+                <md-select ng-model="project.lead" placeholder="lead..." class="md-no-underline">
+                    <md-option ng-repeat="lead in leads" value={{lead.id}}>{{lead.username}} (id:{{lead.id}})</md-option>
                 </md-select>
+            </md-input-container>
+            <!-- <div flex> -->
+            <md-input-container flex=''>
+                <!-- <label>start date...</label> -->
+                <md-datepicker ng-model="project.start_date" placeholder='start date...' class='md-accent md-raised'></md-datepicker>
+            <!-- </div> -->
             </md-input-container>
         </div>
 
@@ -60,12 +60,18 @@
 
         <md-input-container class="md-block md-icon-float">
             <md-icon class="material-icons">description</md-icon>
-            <textarea ng-model="description" placeholder="description..." onkeyup="adjust_textarea(this)"></textarea>
+            <textarea ng-model="project.description" placeholder="description..." onkeyup="adjust_textarea(this)"></textarea>
         </md-input-container>
-
-        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" id="show_client_form">
-            <i class="material-icons">add</i>
-        </button>
-
+        </md-card>
     </md-content>
-</div>
+    <md-dialog-actions>
+        <md-button ng-click='cancel()' class="md-accent md-raised md-hue-3" md-autofocus>
+            Cancel
+        </md-button>
+        <md-button ng-click='putProject()' class="md-accent md-raised md-hue-3" id="show_project_form">
+            Add Project
+        </md-button>
+    </md-dialog-actions>
+
+    
+</md-dialog>

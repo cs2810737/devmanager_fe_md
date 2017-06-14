@@ -41,9 +41,11 @@ angular.module('myApp.projects', ['ngRoute'])
     	$mdDialog.hide(answer);
     };  
 
-    $http.get('http://localhost:8000/leads/')
+    $http.get('http://localhost:8000/users/')
     	.then(function(result){
-    		$scope.leads = result.data
+    		$scope.leads = result.data.filter(function(dev){
+    			return dev.developer.lead
+    		})
     	})
 
     $http.get('http://localhost:8000/clients/')
@@ -51,19 +53,25 @@ angular.module('myApp.projects', ['ngRoute'])
     		$scope.clients = result.data
     	})
 
+    // $scope.project = {}
+
     $scope.putProject = function(){
+    	var start_date = new Date($scope.project.start_date).toISOString().slice(0, 10)
 		var data = {
-			'name': $scope.name,
-			'start_date': $scope.start_date,
-			'client': $scope.client,
-			'lead': $scope.lead,
-			'description': $scope.description
+			'name': $scope.project.name,
+			'start_date': start_date,
+			'client': $scope.project.client,
+			'lead': $scope.project.lead,
+			'description': $scope.project.description,
+			'billables': [],
+			'developers': []
 		}
 		$http.post('http://localhost:8000/projects/', data)
 			.then(function(){
 				$state.go('projects', null, {reload:true})
 				$mdDialog.cancel();
 			})
+		// console.log(data)
 	}
 }])
 
@@ -95,27 +103,27 @@ angular.module('myApp.projects', ['ngRoute'])
         });
   	};
 
-	$scope.viewProject = function(project_id){
-		$state.go('project_detail', {project_id: project_id})
+	$scope.viewProject = function(project){
+		$state.go('project_detail', {project_id: project.id})
 		
 		
 	}
 
 	$scope.deleteProject = function(ev, project){
 		var confirm = $mdDialog.confirm()
-			.title('Are you sure you would you like to delete project '+project.name)
-			.textContent('Careful, you cannot undo this action.')
+			// .title('Are you sure you would you like to delete project '+project.name)
+			.textContent('Delete project '+project.name+'?')
 			.ariaLabel('Lucky day')
 			.targetEvent(ev)
-			.ok('Yes, delete project \'' + project.name + '\'')
-			.cancel('No, cancel delete operation')
+			.ok('Delete')
+			.cancel('Cancel')
 
 		$mdDialog.show(confirm)
 			.then(function(){
 				$http.delete('http://localhost:8000/projects/'+ project.id)
 					.then(function(){
 						$scope.deletion_message = 'Successfully deleted project \'' + project.name +'\''
-						$state.go('clients', null, {reload: true})
+						$state.go('projects', null, {reload: true})
 					})
 				}, function(){
 					$scope.action_message = 'Cancelled deletion'
@@ -132,40 +140,61 @@ angular.module('myApp.projects', ['ngRoute'])
 		.then(function(result){
 
 			$scope.project = result.data
-			// console.log($scope.project)
 			$scope.project_name = $scope.project.name
 			$scope.developers = $scope.project.developers
 			$scope.billables = $scope.project.billables
+			// console.log(JSON.stringify($scope.developers))
 
 			var allDevIds = []
 			var unassignedDevIds = []
 			var assignedDevIds = []
 			var unassignedDevs = []
 			
-			// var today = new Date()
-			// var oneDay = 24*60*60*1000
-			// var startDate = new Date($scope.project.start_date)
-			// var projectDurationDays = Math.round(Math.abs(today.getTime() - startDate.getTime())/ oneDay)
-			// var daysInMonth = 365.2422/12
-			// var projectDurationMonths = projectDurationDays/daysInMonth
-			// console.log($scope.developers)
+			var today = new Date()
+			var oneDay = 24*60*60*1000
+			var startDate = new Date($scope.project.start_date)
+			var projectDurationInDays = Math.round(Math.abs(today.getTime() - startDate.getTime())/ oneDay)
+			var daysInMonth = 365.2422/12
+			var projectDurationInMonths = projectDurationInDays/daysInMonth
+			console.log($scope.developers)
 
+			for (var i = 0; i < $scope.developers.length; i++) {
+				// console.log(JSON.stringify($scope.developers[i]))
+				$scope.developers[i].id = JSON.parse(JSON.stringify($scope.developers[i].user)).id
+				console.log($scope.developers[i].id)
+				$scope.developers[i].username = JSON.parse(JSON.stringify($scope.developers[i].user)).username
+				console.log($scope.developers[i].username)
+				$scope.developers[i].compensation = projectDurationInMonths * $scope.developers[i].monthly_wage
+				console.log($scope.developers[i].compensation)
+				delete $scope.developers[i].user
+			}
 
+			for (var i = 0; i < $scope.billables.length; i++) {
+				$scope.billables[i].finalCost = projectDurationInMonths * $scope.billables[i].cost
+			}
+
+			var developers = $scope.developers
+
+			//get yet to be assigned developers
 			$http.get('http://localhost:8000/users/')
 				.then(function(result){
 					//get user_id's of all devs
 					for (var i = 0; i < result.data.length; i++) {
 						allDevIds[i] = result.data[i].id
 					}
+					console.log('allDevIds')
 					console.log(allDevIds)
 					//get user_id's of already assigned developers
-					for (var i = 0; i < $scope.developers.length; i++) {
-						assignedDevIds[i] = $scope.developers[i].user_id
+					for (var i = 0; i < developers.length; i++) {
+						assignedDevIds[i] = $scope.developers[i].id
 					}
+					// console.log($scope.developers)
+					console.log('assignedDevIds')
 					console.log(assignedDevIds)
 					unassignedDevIds = allDevIds.filter(function(devId){
 						return (!assignedDevIds.includes(devId))
 					})
+					console.log('unassignedDevIds')
 					console.log(unassignedDevIds)
 					for (var i = 0; i < result.data.length; i++) {
 						if (unassignedDevIds.includes(result.data[i].id)) {
@@ -175,14 +204,16 @@ angular.module('myApp.projects', ['ngRoute'])
 					
 					$scope.showAddDevToProjDialog = function(ev) {
 				        $mdDialog.show({
-				            controller: ['$scope', 'unassignedDevs', function($scope, unassignedDevs){
+				            controller: ['$scope', 'unassignedDevs', 'project', function($scope, unassignedDevs, project){
 				            	$scope.unassignedDevs = unassignedDevs
+				            	$scope.project = project
 				            }],
 				            templateUrl: 'developers/add-developer.html',
 				            parent: angular.element(document.body),
 				            targetEvent: ev,
 				            locals: {
-				            	unassignedDevs: unassignedDevs
+				            	unassignedDevs: unassignedDevs,
+				            	project: $scope.project
 				            },
 				            clickOutsideToClose:true
 				        })
@@ -193,7 +224,13 @@ angular.module('myApp.projects', ['ngRoute'])
 				        });
 				    };
 
-				    $scope.offsetBillable = function(ev, billable){
+				    
+				})
+
+
+			$http('$http://localhost:8000/devmembership/')
+				.then(function(result){
+					$scope.offsetBillable = function(ev, billable){
 				    	console.log('reaches here')
 				        $mdDialog.show({
 				            controller: ['$scope', 'billable', function($scope, billable){
@@ -215,9 +252,7 @@ angular.module('myApp.projects', ['ngRoute'])
 				    }
 				})
 
-
-
-
+			$http('$http://localhost:8000/payments/'+ $stateParams.project_id)
 
 			for (var i = 0; i < $scope.billables.length; i++) {
 				$scope.billables[i].reg_date = new Date($scope.billables[i].reg_date).toDateString()
@@ -254,12 +289,12 @@ angular.module('myApp.projects', ['ngRoute'])
 
 		    $scope.deleteBillable = function(ev, billable){
 		        var confirm = $mdDialog.confirm()
-					.title('Are you sure you would you like to delete billable '+billable.name)
-					.textContent('Careful, you cannot undo this action.')
+					// .title('Are you sure you would you like to delete billable '+billable.name)
+					.textContent('Delete '+billable.name+'?')
 					.ariaLabel('Lucky day')
 					.targetEvent(ev)
-					.ok('Yes, delete billable \''+billable.name+'\'')
-					.cancel('No, cancel delete operation')
+					.ok('Delete')
+					.cancel('Cancel')
 
 				$mdDialog.show(confirm)
 					.then(function(){

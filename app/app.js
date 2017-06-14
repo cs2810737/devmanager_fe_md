@@ -87,7 +87,7 @@ config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvi
   		'default': '500',
   		'hue-1': '100',
   		'hue-2': '600',
-  		'hue-3': 'A100'
+  		'hue-3': '700'
   	})
 }])
 

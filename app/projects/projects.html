@@ -1,6 +1,14 @@
 
 <link rel="stylesheet"; href="projects/projects.css">
 
+<style type="text/css">
+	span.glyphicon {
+		position: absolute;
+		right: -15px;
+		top: 15px
+	}
+</style>
+
 <div style="top: 0; right: 0; left: 0;">
 
 	<section layout="column" flex="">
@@ -49,17 +57,25 @@
 	        				</thead>
 							<tbody>
 								
-								<tr ng-repeat="project in projects | filter:searchText" ng-click=viewProject(project.id) style="border: none;">
+								<tr ng-repeat="project in projects | filter:searchText" style="border: none;">
+									<md-tooltip md-direction="bottom">Click project name to view details</md-tooltip>
 									<td title="id"  sortable="'id'" style="border: none; height: 40px">{{project.id}}</td>
-								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{project.name}}</td>
-								    <td title="start_date"  sortable="'name'" style="border: none; height: 40px">{{project.start_date}}</td>
+								    <td title="name" style="border: none; height: 40px" ng-click='viewProject(project)'>{{project.name}}</td>
+								    <td sortable="'name'" style="border: none; height: 40px">{{project.start_date}}
+								    	<span ng-click="deleteProject($event, project)" class="glyphicon glyphicon-trash"><md-tooltip md-direction="bottom">Remove Project</md-tooltip></span>
+								    </td>
 								</tr>
 							</tbody>
 	        			</table>
-	        			<div class="dialog-demo-content" layout="row" layout-wrap layout-margin layout-align="center">
-	        				<button ng-click="showCreateProjectDialog()">Add project</button>
-	        			</div>
 	        		</md-card-content>
+	        		<md-card-actions>
+	        			<div class="dialog-demo-content" layout="row" layout-align="center">
+		        			<md-button ng-click="showCreateProjectDialog()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect md-accent" id="show_project_form">
+		        				<md-tooltip>Add project</md-tooltip>
+					            <i class="material-icons">add</i>
+					        </md-button>
+				        </div>
+	        		</md-card-actions>
 				</md-card>
 			</md-content>
 			<h3></h3>
