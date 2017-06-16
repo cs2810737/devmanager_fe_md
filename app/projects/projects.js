@@ -135,7 +135,7 @@ angular.module('myApp.projects', ['ngRoute'])
 
 
 
-.controller('ProjectCtrl', ['BillFormData','User', '$http', '$scope', '$location', '$stateParams', '$state', '$mdDialog',function(BillFormData, User, $http, $scope, $location, $stateParams, $state, $mdDialog) {
+.controller('ProjectCtrl', ['BillFormData','User', '$http', '$scope', '$location', '$stateParams', '$state', '$mdDialog', '$mdEditDialog', function(BillFormData, User, $http, $scope, $location, $stateParams, $state, $mdDialog, $mdEditDialog) {
 	$http.get('http://localhost:8000/projects/'+$stateParams.project_id)
 		.then(function(result){
 
@@ -152,20 +152,20 @@ angular.module('myApp.projects', ['ngRoute'])
 			
 			var today = new Date()
 			var oneDay = 24*60*60*1000
-			var startDate = new Date($scope.project.start_date)
-			var projectDurationInDays = Math.round(Math.abs(today.getTime() - startDate.getTime())/ oneDay)
+			var projectStartDate = new Date($scope.project.start_date)
+			var projectDurationInDays = Math.round(Math.abs(today.getTime() - projectStartDate.getTime())/ oneDay)
 			var daysInMonth = 365.2422/12
 			var projectDurationInMonths = projectDurationInDays/daysInMonth
-			console.log($scope.developers)
+			// console.log($scope.developers)
 
 			for (var i = 0; i < $scope.developers.length; i++) {
 				// console.log(JSON.stringify($scope.developers[i]))
 				$scope.developers[i].id = JSON.parse(JSON.stringify($scope.developers[i].user)).id
-				console.log($scope.developers[i].id)
+				// console.log($scope.developers[i].id)
 				$scope.developers[i].username = JSON.parse(JSON.stringify($scope.developers[i].user)).username
-				console.log($scope.developers[i].username)
-				$scope.developers[i].compensation = projectDurationInMonths * $scope.developers[i].monthly_wage
-				console.log($scope.developers[i].compensation)
+				// console.log($scope.developers[i].username)
+				// $scope.developers[i].compensation = projectDurationInMonths * $scope.developers[i].monthly_wage
+				// console.log($scope.developers[i].compensation)
 				delete $scope.developers[i].user
 			}
 
@@ -173,7 +173,7 @@ angular.module('myApp.projects', ['ngRoute'])
 				$scope.billables[i].finalCost = projectDurationInMonths * $scope.billables[i].cost
 			}
 
-			var developers = $scope.developers
+			// var developers = $scope.developers
 
 			//get yet to be assigned developers
 			$http.get('http://localhost:8000/users/')
@@ -182,20 +182,20 @@ angular.module('myApp.projects', ['ngRoute'])
 					for (var i = 0; i < result.data.length; i++) {
 						allDevIds[i] = result.data[i].id
 					}
-					console.log('allDevIds')
-					console.log(allDevIds)
+					// console.log('allDevIds')
+					// console.log(allDevIds)
 					//get user_id's of already assigned developers
-					for (var i = 0; i < developers.length; i++) {
+					for (var i = 0; i < $scope.developers.length; i++) {
 						assignedDevIds[i] = $scope.developers[i].id
 					}
 					// console.log($scope.developers)
-					console.log('assignedDevIds')
-					console.log(assignedDevIds)
+					// console.log('assignedDevIds')
+					// console.log(assignedDevIds)
 					unassignedDevIds = allDevIds.filter(function(devId){
 						return (!assignedDevIds.includes(devId))
 					})
-					console.log('unassignedDevIds')
-					console.log(unassignedDevIds)
+					// console.log('unassignedDevIds')
+					// console.log(unassignedDevIds)
 					for (var i = 0; i < result.data.length; i++) {
 						if (unassignedDevIds.includes(result.data[i].id)) {
 							unassignedDevs.push(result.data[i])
@@ -227,32 +227,84 @@ angular.module('myApp.projects', ['ngRoute'])
 				    
 				})
 
-
-			$http('$http://localhost:8000/devmembership/')
+			var devStartDate, devParticipationInDays, devParticipationInMonths, grandTotalDevCost = 0, totalBillableCost = 0
+			$http.get('http://localhost:8000/devmembership/'+$stateParams.project_id)
 				.then(function(result){
-					$scope.offsetBillable = function(ev, billable){
-				    	console.log('reaches here')
-				        $mdDialog.show({
-				            controller: ['$scope', 'billable', function($scope, billable){
-				                $scope.billable = billable
-				            }],
-				            templateUrl: 'developers/billables/offset-billable.html',
-				            parent: angular.element(document.body),
-				            targetEvent: ev,
-				            locals: {
-				                billable: billable
-				            },
-				            clickOutsideToClose:true
-				        })
-				        .then(function(answer) {
-				            $scope.status = 'You said the information was "' + answer + '".';
-				        }, function() {
-				            $scope.status = 'You cancelled the dialog.';
-				        });
+					// $scope.developers.daysWorked =
+					
+					console.log(result.data)
+					console.log($scope.developers)
+					for (var i = 0; i < $scope.developers.length; i++) {
+						devStartDate = new Date(result.data[i].start_date)
+						devParticipationInDays = (Math.round(Math.abs(today.getTime() - devStartDate.getTime())/ oneDay) - 1)
+						devParticipationInMonths = devParticipationInDays/daysInMonth
+						$scope.developers[i].daysWorked = devParticipationInDays
+						$scope.developers[i].compensation = $scope.developers[i].monthly_wage * devParticipationInMonths
+						grandTotalDevCost = grandTotalDevCost + $scope.developers[i].compensation
+					}
+					$scope.grandTotalDevCost = grandTotalDevCost
+					$scope.assignRole = function(event, developer){
+				    	event.stopPropagation()
+				    	var promise = $mdEditDialog.small({
+				    		modelValue: developer.role,
+				    		placeholder: 'Role',
+				    		save: function(input){
+				    			developer.comment = input.$modelValue
+				    		},
+				    		targetEvent: event,
+				    		validators: {
+				    			'md-maxlength': 64
+				    		}
+				    	})
+
+				    	promise.then(function(ctrl){
+				    		var input = ctrl.getInput()
+				    	}).then()
 				    }
+				    $scope.removeDeveloper = function(ev, developer){
+						var confirm = $mdDialog.confirm()
+							// .title('Are you sure you would you like to delete project '+project.name)
+							.textContent('Remove '+developer.username+' from project?')
+							.ariaLabel('Lucky day')
+							.targetEvent(ev)
+							.ok('Remove')
+							.cancel('Cancel')
+						$mdDialog.show(confirm)
+							.then(function(){
+								$http.delete('http://localhost:8000/devmembershipdevid/'+ developer.id)
+									.then(function(){
+										$scope.deletion_message = 'Successfully removed developer \'' + developer.username +'\''
+										$state.go('projects', null, {reload: true})
+									})
+								}, function(){
+									$scope.action_message = 'Cancelled deletion'
+								})
+					}
 				})
 
-			$http('$http://localhost:8000/payments/'+ $stateParams.project_id)
+			// $http.get('$http://localhost:8000/payments/'+ $stateParams.project_id)
+			// 	.then(function(result){
+			// 		$scope.offsetBillable = function(ev, billable){
+			// 	    	console.log('reaches here')
+			// 	        $mdDialog.show({
+			// 	            controller: ['$scope', 'billable', function($scope, billable){
+			// 	                $scope.billable = billable
+			// 	            }],
+			// 	            templateUrl: 'developers/billables/offset-billable.html',
+			// 	            parent: angular.element(document.body),
+			// 	            targetEvent: ev,
+			// 	            locals: {
+			// 	                billable: billable
+			// 	            },
+			// 	            clickOutsideToClose:true
+			// 	        })
+			// 	        .then(function(answer) {
+			// 	            $scope.status = 'You said the information was "' + answer + '".';
+			// 	        }, function() {
+			// 	            $scope.status = 'You cancelled the dialog.';
+			// 	        });
+			// 	    }
+			// 	})
 
 			for (var i = 0; i < $scope.billables.length; i++) {
 				$scope.billables[i].reg_date = new Date($scope.billables[i].reg_date).toDateString()
@@ -261,7 +313,7 @@ angular.module('myApp.projects', ['ngRoute'])
 			var grand_total_programmer_cost = 0, total_billable_cost = 0
 			for (var i = 0; i < $scope.developers.length; i++) {
 				// $scope.developers[i].cost = $scope.developers[i].hourly_rate *  $scope.developers[i].hours_worked
-				grand_total_programmer_cost = grand_total_programmer_cost + $scope.developers[i].monthly_wage
+				grand_total_programmer_cost = grand_total_programmer_cost + $scope.developers[i].compensation
 			}
 			for (var i = 0; i < $scope.billables.length; i++) {
 				total_billable_cost = total_billable_cost + $scope.billables[i].cost

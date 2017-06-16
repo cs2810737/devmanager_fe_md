@@ -41,10 +41,10 @@
 	</md-table-container>
 	<md-table-pagination md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{unassignedDevs.length}}" md-on-paginate="" md-page-select></md-table-pagination>
 	<md-dialog-actions layout="row">
-		<md-button class="addfields" ng-click="cancel()">
+		<md-button class="md-accent md-raised md-hue-3" ng-click="cancel()" md-autofocus>
 			Cancel
 		</md-button>
-		<md-button class="addfields" ng-click="addDevelopers()">
+		<md-button class="md-accent md-raised md-hue-3" ng-click="addDevelopers()">
 			Add Selected Developers
 		</md-button>
 	</md-dialog-actions>

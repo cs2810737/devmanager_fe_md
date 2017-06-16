@@ -56,10 +56,10 @@
 								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{client.phone_number}}</td>
 								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{client.email}}</td>
 								    <td title="name"  sortable="'name'" style="border: none; height: 40px">{{client.address}}</td>
-								    <td title="cost"  sortable="'cost'" style="border: none; height: 40px">
+								    <td   sortable="'cost'" style="border: none; height: 40px">
 								    	{{client.noOfProjects}}
 								    	
-								    		<span class="glyphicon glyphicon-trash" ng-click="deleteClient($event, client)" style="float: right;"></span>
+								    		<span class="glyphicon glyphicon-trash" ng-click="deleteClient($event, client)" style="float: right;"><md-tooltip md-direction="bottom">Remove Client</md-tooltip></span>
 								    	
 								    </td>
 								</tr>

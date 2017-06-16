@@ -3,7 +3,11 @@
 <style type="text/css">
 	table#billablesTable tr td a.button { display:none;}
   	table#billablesTable tr:hover td a.button { display:inline-block;}
-
+	span.glyphicon {
+		/*position: absolute;*/
+		right: -165px;
+		/*top: 15px*/
+	}
 </style>
 
 <div style="top: 0; right: 0; left: 0;">
@@ -30,10 +34,9 @@
 
 	    <div ng-controller='ProjectCtrl' ng-cloak>
 		  	<md-content>
-			  	<md-card flex="flex">
-					<h5 style="line-height: 10px">{{ project_name }}</h5>
-					<div layout='row'>
-						
+			  	<md-card flex="flex" >
+					<h5 class="md-primary" style="line-height: 10px;">{{ project_name }}</h5>
+					<div layout='row' >
 		        		
 					</div>
 	        		
@@ -43,7 +46,7 @@
 		      			<md-tab label="Developers">
 		        			<md-content class="md-padding">
 			        			<md-card-content >
-				        			<table class="mdl-data-table mdl-js-data-table table-striped" id="developersTable" show-filter="true" style="width: 100%">
+				        			<table show-filter="true" style="width: 100%" md-table md-row-select multiple md-progress="promise" id="developersTable">
 				        				<thead>
 				        					<tr>
 											    <th style="color: #fff">Name</th>
@@ -55,14 +58,16 @@
 										<tbody>
 											<tr ng-repeat="developer in developers" style="line-height: 40px">
 										        <td title="'Name'"  sortable="'name'">{{developer.username}}</td>
-										        <td md-cell md-edit-dialog ng-click="editComment($event, unassignedDev)" ng-class="{'md-placeholder': !unassignedDev.role}">{{ unassignedDev.role || 'Assign role' }}</td>
-										        <td title="'hourly_rate'" >{{developer.duration}}</td>
-										        <td title='total_dev_cost'> {{developer.compensation }} </td>
+										        <td md-cell  ng-click="assignRole($event, developer)" ng-class="{'md-placeholder': !developer.role}">{{ developer.role || 'Click here to assign role' }}</td>
+										        <td title="'days_worked'" >{{developer.daysWorked}}</td>
+										        <td > {{developer.compensation }}
+										        	<span ng-click="removeDeveloper($event, developer)" class="glyphicon glyphicon-remove"><md-tooltip md-direction="bottom">Remove Developer</md-tooltip></span>
+										        </td>
 										    </tr>
 										</tbody>
 				        			</table>								
 	        					</md-card-content>
-	        					<p style="font-style: italic;">Grand total programmer cost: {{grand_total_programmer_cost}}</p>
+	        					<p style="font-style: italic;">Grand total programmer cost: {{grandTotalDevCost}}</p>
 	        					<md-card-actions>
 	        						<div class="dialog-demo-content" layout="row" layout-align="center">
 					        			<md-button ng-click="showAddDevToProjDialog()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect md-accent" id="show_project_form">
@@ -120,8 +125,13 @@
 									<md-table-pagination style='color: #757575' md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{billables.length}}" md-on-paginate="" md-page-select></md-table-pagination>	
 									<p style="font-style: italic;">Billables Grand total cost: {{total_billable_cost}}</p>
 					        	</md-card-content>
-					        	<md-card-actions layout="row">
-				        			<md-button ng-click="showCreateBillableDialog()" >Add billable</md-button>
+					        	<md-card-actions >
+				        			<div class="dialog-demo-content" layout="row" layout-align="center">
+					        			<md-button ng-click="showCreateBillableDialog()" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect md-accent" >
+					        				<md-tooltip>Add Billable</md-tooltip>
+								            <i class="material-icons">add</i>
+								        </md-button>
+							        </div>
 				        		</md-card-actions>
 					        </md-content>
 					    </md-tab>

@@ -39,7 +39,7 @@
 					<md-toolbar ng-controller='SideBarCtrl' style="background-color: #1b325b">
 						<div class="md-toolbar-tools">
 							<label class="label" for="projects">
-								<h3 style="float: left;">Projects</h3>
+								<h3 style="text-transform: uppercase;font-family: 'Open Sans Condensed';float: left;">Projects</h3>
 							</label>
 	          				
 						</div>
@@ -47,6 +47,7 @@
 
 	        		<md-card-content ng-controller='ProjectsCtrl'>
 	        			<table class="mdl-data-table mdl-js-data-table table-striped" id="projectsTable" show-filter="true" style="width: 100%">
+	        			<!-- <table md-table id="projectsTable" show-filter="true" style="width: 100%"> -->
 	        				<thead>
 	        					<tr>
 									<th class="mdl-data-table__header--sorted-ascending" style="color: #fff">Project ID</th>
@@ -58,7 +59,7 @@
 							<tbody>
 								
 								<tr ng-repeat="project in projects | filter:searchText" style="border: none;">
-									<md-tooltip md-direction="bottom">Click project name to view details</md-tooltip>
+									<md-tooltip md-direction="bottom">Click the project name to view details</md-tooltip>
 									<td title="id"  sortable="'id'" style="border: none; height: 40px">{{project.id}}</td>
 								    <td title="name" style="border: none; height: 40px" ng-click='viewProject(project)'>{{project.name}}</td>
 								    <td sortable="'name'" style="border: none; height: 40px">{{project.start_date}}

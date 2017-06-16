@@ -72,4 +72,5 @@ angular.module('myApp.developers', ['ngRoute'])
 	$scope.goToRegistration = function(){
 		$location.path('developers/register')
 	}
+	
 }]);
