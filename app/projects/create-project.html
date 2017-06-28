@@ -41,7 +41,7 @@
                 <md-icon class="material-icons md-accent md-hue-1">person</md-icon>
                 <!-- <input ng-model="lead" type="text" placeholder="lead developer..."> -->
                 <md-select ng-model="project.lead" placeholder="lead..." class="md-no-underline">
-                    <md-option ng-repeat="lead in leads" value={{lead.id}}>{{lead.username}} (id:{{lead.id}})</md-option>
+                    <md-option ng-repeat="lead in leads" value={{lead.user}}>{{lead.user}}</md-option>
                 </md-select>
             </md-input-container>
             <!-- <div flex> -->
@@ -51,12 +51,6 @@
             <!-- </div> -->
             </md-input-container>
         </div>
-
-        <!-- <md-input-container>
-            <md-option ng-repeat="lead in ctrl.states" ng-value="state.abbrev">
-                
-            </md-option>
-        </md-input-container> -->
 
         <md-input-container class="md-block md-icon-float">
             <md-icon class="material-icons md-accent md-hue-1">description</md-icon>

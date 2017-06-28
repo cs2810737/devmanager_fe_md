@@ -16,7 +16,7 @@ angular.module('myApp', [
   'ngAnimate',
   'ngAria',
   'ngMessages',
-  'ngTable',
+  // 'ngTable',
   'md.data.table'
 ]).
 config(['$locationProvider', '$urlRouterProvider', '$stateProvider', '$httpProvider', '$mdThemingProvider', function($locationProvider, $urlRouterProvider, $stateProvider, $httpProvider, $mdThemingProvider) {

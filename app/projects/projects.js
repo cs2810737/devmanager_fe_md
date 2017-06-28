@@ -41,11 +41,9 @@ angular.module('myApp.projects', ['ngRoute'])
     	$mdDialog.hide(answer);
     };  
 
-    $http.get('http://localhost:8000/users/')
+    $http.get('http://localhost:8000/leads/')
     	.then(function(result){
-    		$scope.leads = result.data.filter(function(dev){
-    			return dev.developer.lead
-    		})
+    		$scope.leads = result.data
     	})
 
     $http.get('http://localhost:8000/clients/')
@@ -63,16 +61,18 @@ angular.module('myApp.projects', ['ngRoute'])
 			'client': $scope.project.client,
 			'lead': $scope.project.lead,
 			'description': $scope.project.description,
-			'billables': [],
-			'developers': []
+			// 'billables': [],
+			// 'developers': []
 		}
+
 		$http.post('http://localhost:8000/projects/', data)
 			.then(function(){
 				$state.go('projects', null, {reload:true})
 				$mdDialog.cancel();
 			})
-		// console.log(data)
+		console.log(data)
 	}
+		
 }])
 
 .controller('ProjectsCtrl', ['Token','$http', '$scope', '$location', '$state', '$mdDialog', '$window', function(Token, $http, $scope, $location, $state, $mdDialog, $window) {
@@ -136,7 +136,7 @@ angular.module('myApp.projects', ['ngRoute'])
 
 
 .controller('ProjectCtrl', ['BillFormData','User', '$http', '$scope', '$location', '$stateParams', '$state', '$mdDialog', '$mdEditDialog', function(BillFormData, User, $http, $scope, $location, $stateParams, $state, $mdDialog, $mdEditDialog) {
-	$http.get('http://localhost:8000/projects/'+$stateParams.project_id)
+	$http.get('http://localhost:8000/projects/'+$stateParams.project_id+'/')
 		.then(function(result){
 
 			$scope.project = result.data
@@ -228,7 +228,7 @@ angular.module('myApp.projects', ['ngRoute'])
 				})
 
 			var devStartDate, devParticipationInDays, devParticipationInMonths, grandTotalDevCost = 0, totalBillableCost = 0
-			$http.get('http://localhost:8000/devmembership/'+$stateParams.project_id)
+			$http.get('http://localhost:8000/devmembership/'+$stateParams.project_id+'/')
 				.then(function(result){
 					// $scope.developers.daysWorked =
 					
@@ -274,7 +274,7 @@ angular.module('myApp.projects', ['ngRoute'])
 								$http.delete('http://localhost:8000/devmembershipdevid/'+ developer.id)
 									.then(function(){
 										$scope.deletion_message = 'Successfully removed developer \'' + developer.username +'\''
-										$state.go('projects', null, {reload: true})
+										$state.go('project_detail', null, {reload: true})
 									})
 								}, function(){
 									$scope.action_message = 'Cancelled deletion'

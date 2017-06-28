@@ -59,6 +59,10 @@ angular.module('myApp.developers', ['ngRoute'])
 			}
 			// console.log($scope.selected[i])
 			$http.post('http://localhost:8000/devmembership/', membership)
+				.then(function(){
+					$mdDialog.hide();
+					$state.go('project_detail', null, {reload: true})
+				})
 		}
 		console.log($scope.selected)
 	}
