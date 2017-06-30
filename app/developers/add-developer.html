@@ -33,8 +33,7 @@
 				<tr md-row md-select="unassignedDev" md-select-id='dev' md-auto-select ng-repeat="unassignedDev in unassignedDevs">
 					<td md-cell>{{unassignedDev.id}}</td>
 					<td md-cell>{{ unassignedDev.username }}</td>
-					
-					<td md-cell>2</td>
+					<td md-cell  ng-click="assignRole($event, developer)" ng-class="{'md-placeholder': !developer.role}">{{ developer.role || 'Click here to assign role' }}</td>
 				</tr>
 			</tbody>
 		</table>

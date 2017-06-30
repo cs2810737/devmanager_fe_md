@@ -243,24 +243,7 @@ angular.module('myApp.projects', ['ngRoute'])
 						grandTotalDevCost = grandTotalDevCost + $scope.developers[i].compensation
 					}
 					$scope.grandTotalDevCost = grandTotalDevCost
-					$scope.assignRole = function(event, developer){
-				    	event.stopPropagation()
-				    	var promise = $mdEditDialog.small({
-				    		modelValue: developer.role,
-				    		placeholder: 'Role',
-				    		save: function(input){
-				    			developer.comment = input.$modelValue
-				    		},
-				    		targetEvent: event,
-				    		validators: {
-				    			'md-maxlength': 64
-				    		}
-				    	})
-
-				    	promise.then(function(ctrl){
-				    		var input = ctrl.getInput()
-				    	}).then()
-				    }
+					
 				    $scope.removeDeveloper = function(ev, developer){
 						var confirm = $mdDialog.confirm()
 							// .title('Are you sure you would you like to delete project '+project.name)
@@ -282,29 +265,30 @@ angular.module('myApp.projects', ['ngRoute'])
 					}
 				})
 
-			// $http.get('$http://localhost:8000/payments/'+ $stateParams.project_id)
-			// 	.then(function(result){
-			// 		$scope.offsetBillable = function(ev, billable){
-			// 	    	console.log('reaches here')
-			// 	        $mdDialog.show({
-			// 	            controller: ['$scope', 'billable', function($scope, billable){
-			// 	                $scope.billable = billable
-			// 	            }],
-			// 	            templateUrl: 'developers/billables/offset-billable.html',
-			// 	            parent: angular.element(document.body),
-			// 	            targetEvent: ev,
-			// 	            locals: {
-			// 	                billable: billable
-			// 	            },
-			// 	            clickOutsideToClose:true
-			// 	        })
-			// 	        .then(function(answer) {
-			// 	            $scope.status = 'You said the information was "' + answer + '".';
-			// 	        }, function() {
-			// 	            $scope.status = 'You cancelled the dialog.';
-			// 	        });
-			// 	    }
-			// 	})
+			$http.get('$http://localhost:8000/payments/'+ $stateParams.project_id+'/')
+				.then(function(result){
+					$scope.payments = result.data
+					$scope.offsetBillable = function(ev, billable){
+				    	console.log('reaches here')
+				        $mdDialog.show({
+				            controller: ['$scope', 'billable', function($scope, billable){
+				                $scope.billable = billable
+				            }],
+				            templateUrl: 'developers/billables/offset-billable.html',
+				            parent: angular.element(document.body),
+				            targetEvent: ev,
+				            locals: {
+				                billable: billable
+				            },
+				            clickOutsideToClose:true
+				        })
+				        .then(function(answer) {
+				            $scope.status = 'You said the information was "' + answer + '".';
+				        }, function() {
+				            $scope.status = 'You cancelled the dialog.';
+				        });
+				    }
+				})
 
 			for (var i = 0; i < $scope.billables.length; i++) {
 				$scope.billables[i].reg_date = new Date($scope.billables[i].reg_date).toDateString()

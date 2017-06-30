@@ -135,6 +135,11 @@
             </div>
         </md-toolbar>
         <md-card>
+            <md-input-container class="md-block">
+                <md-switch style='color: #456464' name="special" ng-model="recurring" required>
+                  recurrent
+                </md-switch>
+            </md-input-container>
             <md-input-container class="md-icon-float md-block">
                 <!-- Use floating label instead of placeholder -->
                 <label>name...</label>
@@ -160,22 +165,21 @@
                 </md-input-container>
             </div>
 
-            <md-input-container class="md-block md-icon-float">
+            <div layout='row' flex=''>
+                <md-input-container class="md-block md-icon-float" flex='50'>
                 
-                <md-icon class="material-icons md-accent md-hue-1">local_atm</md-icon>
-                <input ng-model="cost" type="number" min="0.00" step="100" id="sample3" placeholder="cost...">
+                    <md-icon class="material-icons md-accent md-hue-1" >local_atm</md-icon>
+                    <input ng-model="cost" type="number" min="0.00" step="100" id="sample3" placeholder="cost...">
+                    
+                </md-input-container>
                 
-            </md-input-container>
+            </div>
+            
 
             <md-input-container class="md-block md-icon-float">
                 <md-icon class="material-icons md-accent md-hue-1">description</md-icon>
                 <textarea ng-model="description" placeholder="description..." onkeyup="adjust_textarea(this)"></textarea>
             </md-input-container>
-
-            <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="switch-1">
-                <span class="mdl-switch__label">bill recurrent?</span>
-                <input type="checkbox" ng-model="recurring" placeholder="bill recurrent?" checked style="float: right;" name="recurring">
-            </label>
         </md-card>
         
 

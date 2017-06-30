@@ -37,6 +37,25 @@ angular.module('myApp.developers', ['ngRoute'])
     		$scope.clients = result.data
     	})
 
+    $scope.assignRole = function(event, developer){
+    	event.stopPropagation()
+    	var promise = $mdEditDialog.small({
+    		modelValue: developer.role,
+    		placeholder: 'Role',
+    		save: function(input){
+    			developer.role = input.$modelValue
+    		},
+    		targetEvent: event,
+    		validators: {
+    			'md-maxlength': 64
+    		}
+    	})
+
+    	promise.then(function(ctrl){
+    		var input = ctrl.getInput()
+    	}).then()
+    }
+
     $scope.addDevelopers = function(){
 		// var data = {
 		// 	'name': $scope.name,

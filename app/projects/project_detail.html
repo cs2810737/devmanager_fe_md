@@ -58,7 +58,7 @@
 										<tbody>
 											<tr ng-repeat="developer in developers" style="line-height: 40px">
 										        <td title="'Name'"  sortable="'name'">{{developer.username}}</td>
-										        <td md-cell  ng-click="assignRole($event, developer)" ng-class="{'md-placeholder': !developer.role}">{{ developer.role || 'Click here to assign role' }}</td>
+										        <td >{{ developer.role }}</td>
 										        <td title="'days_worked'" >{{developer.daysWorked}}</td>
 										        <td > {{developer.compensation }}
 										        	
@@ -68,7 +68,8 @@
 										        </td>
 										    </tr>
 										</tbody>
-				        			</table>								
+				        			</table>
+				        			<md-table-pagination style='color: #757575' md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{developers.length}}" md-on-paginate="" md-page-select></md-table-pagination>								
 	        					</md-card-content>
 	        					<p style="font-style: italic;">Grand total programmer cost: {{grandTotalDevCost}}</p>
 	        					<md-card-actions>
@@ -84,7 +85,7 @@
 		      			</md-tab>
 		      			<md-tab label="Billables">
 					        <md-content class="md-padding" md-theme="darkBlue" style="padding-left: 0px; padding-top: 0px">
-					        	<md-card-content style="padding-left: 0px; padding-top: 0px">
+					        	<md-card-content style="padding: 0px">
 					        		<md-table-container >
 										<table md-table md-row-select multiple ng-model="selected" md-progress="promise" id="billablesTable">
 											<thead md-head>
@@ -125,7 +126,7 @@
 											</tbody>
 										</table>
 									</md-table-container>
-									<md-table-pagination style='color: #757575' md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{billables.length}}" md-on-paginate="" md-page-select></md-table-pagination>	
+									<span style='background-color: #753515'><md-table-pagination style='color: #757575' md-limit="5" md-limit-options="[5, 10, 15]" md-page="1" md-total="{{billables.length}}" md-on-paginate="" md-page-select></md-table-pagination></span>	
 									<p style="font-style: italic;">Billables Grand total cost: {{total_billable_cost}}</p>
 					        	</md-card-content>
 					        	<md-card-actions >

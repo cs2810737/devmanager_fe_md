@@ -40,17 +40,17 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
             'name': $scope.name,
             'cost': $scope.cost,
             'recurring': $scope.recurring,
-            'reg_date': $scope.reg_date,
+            'reg_date': new Date().toISOString().slice(0, 10),
             'project': $scope.project_id,
             'developer': $scope.developer_id,
             'description': $scope.description
         }
         console.log(data)
-        $http.post('http://localhost:8000/billables/', data)
-            .then(function(){
-                $state.go('projects', null, {reload:true})
-                $mdDialog.cancel();
-            })
+        // $http.post('http://localhost:8000/billables/', data)
+        //     .then(function(){
+        //         $state.go('projects', null, {reload:true})
+        //         $mdDialog.cancel();
+        //     })
     }
 
     
