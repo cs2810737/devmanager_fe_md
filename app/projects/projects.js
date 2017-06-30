@@ -75,12 +75,11 @@ angular.module('myApp.projects', ['ngRoute'])
 		
 }])
 
-.controller('ProjectsCtrl', ['Token','$http', '$scope', '$location', '$state', '$mdDialog', '$window', function(Token, $http, $scope, $location, $state, $mdDialog, $window) {
+.controller('ProjectsCtrl', ['Token','$http', '$scope', '$location', '$state', '$mdDialog', '$window', '$stateParams', function(Token, $http, $scope, $location, $state, $mdDialog, $window, $stateParams) {
 	
 	// $http.defaults.headers.common.Authorization = Token.getData()
 	$http.defaults.headers.common.Authorization = "Bearer " + $window.sessionStorage.token;
 	console.log($window.sessionStorage.token)
-
 
 	$http.get('http://localhost:8000/projects/')
 		.then(function(result){
@@ -104,7 +103,7 @@ angular.module('myApp.projects', ['ngRoute'])
   	};
 
 	$scope.viewProject = function(project){
-		$state.go('project_detail', {project_id: project.id})
+		$state.go('project_detail', {project_id: project.id, username: $stateParams.username})
 		
 		
 	}
@@ -267,27 +266,9 @@ angular.module('myApp.projects', ['ngRoute'])
 
 			$http.get('$http://localhost:8000/payments/'+ $stateParams.project_id+'/')
 				.then(function(result){
+					console.log('here')
 					$scope.payments = result.data
-					$scope.offsetBillable = function(ev, billable){
-				    	console.log('reaches here')
-				        $mdDialog.show({
-				            controller: ['$scope', 'billable', function($scope, billable){
-				                $scope.billable = billable
-				            }],
-				            templateUrl: 'developers/billables/offset-billable.html',
-				            parent: angular.element(document.body),
-				            targetEvent: ev,
-				            locals: {
-				                billable: billable
-				            },
-				            clickOutsideToClose:true
-				        })
-				        .then(function(answer) {
-				            $scope.status = 'You said the information was "' + answer + '".';
-				        }, function() {
-				            $scope.status = 'You cancelled the dialog.';
-				        });
-				    }
+					
 				})
 
 			for (var i = 0; i < $scope.billables.length; i++) {
@@ -308,12 +289,20 @@ angular.module('myApp.projects', ['ngRoute'])
 
 			$scope.showCreateBillableDialog = function(ev) {
 		        // Appending dialog to document.body to cover sidenav in docs app
-		        
 		        $mdDialog.show({
-		            controller: 'BillableDialogCtrl',
+		            // controller: ['$scope', 'project', 'developer', function($scope, project, developer){
+		            controller: ['$scope', 'project_id', function($scope, project_id){
+		            	$scope.project_id = project_id
+		            	$scope.username = $stateParams.username
+		            	// $scope.developer = developer
+		            }],
 		            templateUrl: 'developers/billables/create-billable.html',
 		            parent: angular.element(document.body),
 		            targetEvent: ev,
+		            locals: {
+		            	project_id: $stateParams.project_id,
+		            	// developer:
+		            },
 		            clickOutsideToClose:true
 		        })
 		        .then(function(answer) {
@@ -322,6 +311,28 @@ angular.module('myApp.projects', ['ngRoute'])
 		            $scope.status = 'You cancelled the dialog.';
 		        });
 		    };
+		    $scope.offsetBillable = function(ev, billable){
+		    	console.log('reaches here')
+		        $mdDialog.show({
+		            controller: ['$scope', 'billable', 'project_id', function($scope, billable, project_id){
+		                $scope.billable = billable
+		                $scope.project_id = project_id
+		            }],
+		            templateUrl: 'developers/billables/offset-billable.html',
+		            parent: angular.element(document.body),
+		            targetEvent: ev,
+		            locals: {
+		                billable: billable,
+		                project_id: $stateParams.project_id
+		            },
+		            clickOutsideToClose:true
+		        })
+		        .then(function(answer) {
+		            $scope.status = 'You said the information was "' + answer + '".';
+		        }, function() {
+		            $scope.status = 'You cancelled the dialog.';
+		        });
+		    }
 
 		    $scope.deleteBillable = function(ev, billable){
 		        var confirm = $mdDialog.confirm()

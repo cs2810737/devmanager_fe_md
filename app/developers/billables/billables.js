@@ -16,7 +16,7 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
   		})
 	}])
 
-.controller('BillableDialogCtrl', ['BillFormData', 'User', '$http', '$scope', '$state', '$mdDialog', function(BillFormData, User, $http, $scope, $state, $mdDialog){
+.controller('BillableDialogCtrl', ['BillFormData', 'User', '$http', '$scope', '$state', '$mdDialog', '$stateParams', function(BillFormData, User, $http, $scope, $state, $mdDialog, $stateParams){
     // var formData = BillFormData.getData()
     // $scope.user = User.getData()
     // $scope.developer_id = $scope.user.id
@@ -34,23 +34,49 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
     $scope.answer = function(answer) {
         $mdDialog.hide(answer);
     };
+    // console.log(User.getData())
+    // console.log($stateParams.username)
+    // var username = User.getData()
 
+    $scope.recordPayment = function(){
+        var data = {
+            date_made: new Date().toISOString().slice(0, 10),
+            amount: $scope.amount,
+            comment: $scope.comment,
+            billable: $scope.billable.id,
+            project: $scope.project_id
+        }
+        console.log(data)
+        $http.post('http://localhost:8000/payments/', data)
+            .then(function(){
+                $scope.hide()
+            })
+    }
+    
     $scope.putBillable = function(){
         var data = {
             'name': $scope.name,
             'cost': $scope.cost,
-            'recurring': $scope.recurring,
+            'recurring': ($scope.recurring == undefined ? false : $scope.recurring),
             'reg_date': new Date().toISOString().slice(0, 10),
             'project': $scope.project_id,
-            'developer': $scope.developer_id,
+            'developer': 1,
             'description': $scope.description
         }
         console.log(data)
-        // $http.post('http://localhost:8000/billables/', data)
-        //     .then(function(){
-        //         $state.go('projects', null, {reload:true})
-        //         $mdDialog.cancel();
+        // $http.get('http://localhost:8000/users/'+username)
+        //     .then(function(result){
+        //         console.log(result.data.id)
+        //         data.developer = result.data.id
         //     })
+            
+        $http.post('http://localhost:8000/billables/', data)
+            .then(function(){
+                $state.go('projects', null, {reload:true})
+                $mdDialog.cancel();
+            })
+            
+        
     }
 
     

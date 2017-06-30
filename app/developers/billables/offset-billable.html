@@ -1,6 +1,6 @@
 
 
-<md-dialog ng-controller=DevDialogCtrl>
+<md-dialog ng-controller=BillableDialogCtrl>
 	<md-toolbar class="md-default">
 		<div layout='row'>
 			<h4 style="text-transform: uppercase;font-family: 'Open Sans Condensed';">Offset Bill</h4>	
@@ -9,22 +9,22 @@
 	</md-toolbar>
 	<md-card layout='row'>
 		<md-input-container class="md-block md-icon-float">
-            <md-icon class="material-icons">local_atm</md-icon>
-            <input ng-model="cost" type="number" min="0.00" value="5000" placeholder="amount...">
+            <md-icon class="material-icons md-accent md-hue-1">local_atm</md-icon>
+            <input ng-model="amount" type="number" min="0.00" placeholder="amount...">
         </md-input-container>
         <md-input-container class="md-block md-icon-float">
-            <md-icon class="material-icons">comment</md-icon>
-            <textarea ng-model="description" placeholder="comment..." onkeyup="adjust_textarea(this)"></textarea>
+            <md-icon class="material-icons md-accent md-hue-1">comment</md-icon>
+            <textarea ng-model="comment" placeholder="comment..." onkeyup="adjust_textarea(this)"></textarea>
         </md-input-container>
 
 	</md-card>
 	
 	<md-dialog-actions layout="row">
-		<md-button class="addfields" ng-click="cancel()">
+		<md-button class=" md-accent md-raised md-hue-2" ng-click="cancel()" md-autofocus>
 			Cancel
 		</md-button>
-		<md-button class="addfields" ng-click="addNewChoice()">
-			Offset Bill
+		<md-button class=" md-accent md-raised md-hue-2" ng-click="recordPayment()">
+			Record Payment
 		</md-button>
 	</md-dialog-actions>
 </md-dialog>

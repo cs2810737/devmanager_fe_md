@@ -21,6 +21,7 @@ angular.module('myApp.login', ['ngRoute', 'ui.router'])
 			username: $scope.vm.username,
 			password: $scope.vm.password
 		}
+		User.setData(credentials.username)
 		// $http.get("http://localhost:8000/users/"+$scope.vm.username)
 		// 	.then(function(result){
 		// 		console.log(result.data)
