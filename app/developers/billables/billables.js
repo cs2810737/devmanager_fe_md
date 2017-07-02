@@ -50,6 +50,7 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
         $http.post('http://localhost:8000/payments/', data)
             .then(function(){
                 $scope.hide()
+                $state.go('project_detail', {project_id: $scope.project_id},{reload: true})
             })
     }
     

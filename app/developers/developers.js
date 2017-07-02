@@ -37,51 +37,63 @@ angular.module('myApp.developers', ['ngRoute'])
     		$scope.clients = result.data
     	})
 
-    $scope.assignRole = function(event, developer){
+    // $scope.assignRole = function(event, developer){
+    // 	event.stopPropagation()
+    // 	var promise = $mdEditDialog.small({
+    // 		modelValue: developer.role,
+    // 		placeholder: 'Role',
+    // 		save: function(input){
+    // 			developer.role = input.$modelValue
+    // 		},
+    // 		targetEvent: event,
+    // 		validators: {
+    // 			'md-maxlength': 64
+    // 		}
+    // 	})
+
+    // 	promise.then(function(ctrl){
+    // 		var input = ctrl.getInput()
+    // 	}).then()
+    // }
+    $scope.assignRole = function(event, unassignedDev){
     	event.stopPropagation()
     	var promise = $mdEditDialog.small({
-    		modelValue: developer.role,
+    		modelValue: unassignedDev.role,
     		placeholder: 'Role',
     		save: function(input){
-    			developer.role = input.$modelValue
+    			unassignedDev.role = input.$modelValue
+                console.log(unassignedDev)
     		},
     		targetEvent: event,
     		validators: {
-    			'md-maxlength': 64
+    			'md-maxlength': 30
     		}
     	})
 
     	promise.then(function(ctrl){
     		var input = ctrl.getInput()
-    	}).then()
-    }
 
+    		// input.$viewChangeListeners.push(function(){
+    		// 	input.$setValidity('test', input.$modelValue !== 'test')
+    		// })
+    	}).then(function(){
+            console.log(unassignedDev)
+        })
+    }
     $scope.addDevelopers = function(){
-		// var data = {
-		// 	'name': $scope.name,
-		// 	'start_date': $scope.start_date,
-		// 	'client': $scope.client,
-		// 	'lead': $scope.lead,
-		// 	'description': $scope.description
-		// }
-		// $http.post('http://localhost:8000/projects/', data)
-		// 	.then(function(){
-		// 		$state.go('projects', null, {reload:true})
-		// 		$mdDialog.cancel();
-		// 	})
 		for (var i = 0; i < $scope.selected.length; i++) {
 			var membership = {
 				'start_date': new Date().toISOString().slice(0, 10),
-				'role': 'Click here to assign role',
+				'role': $scope.selected[i].role,
 				'developer': $scope.selected[i].id,
 				'project': $scope.project.id
 			}
-			// console.log($scope.selected[i])
-			$http.post('http://localhost:8000/devmembership/', membership)
-				.then(function(){
-					$mdDialog.hide();
-					$state.go('project_detail', null, {reload: true})
-				})
+			console.log(membership)
+			// $http.post('http://localhost:8000/devmembership/', membership)
+			// 	.then(function(){
+			// 		$mdDialog.hide();
+			// 		$state.go('project_detail', null, {reload: true})
+			// 	})
 		}
 		console.log($scope.selected)
 	}

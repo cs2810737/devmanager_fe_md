@@ -7,7 +7,7 @@
 <md-dialog ng-controller=DevDialogCtrl flex='80'>
 	<md-toolbar class="md-table-toolbar md-default">
 		<div class="md-toolbar-tools">
-			<span>Select Developers to add to Project</span>
+			<span>Add Developers to Project</span>
 			<span class="glyphicons glyphicons-remove"></span>
 			<!-- <span flex=''></span>
 
@@ -33,7 +33,7 @@
 				<tr md-row md-select="unassignedDev" md-select-id='dev' md-auto-select ng-repeat="unassignedDev in unassignedDevs">
 					<td md-cell>{{unassignedDev.id}}</td>
 					<td md-cell>{{ unassignedDev.username }}</td>
-					<td md-cell  ng-click="assignRole($event, developer)" ng-class="{'md-placeholder': !developer.role}">{{ developer.role || 'Click here to assign role' }}</td>
+					<td md-cell  ng-click="assignRole($event, unassignedDev)" ng-class="{'md-placeholder': !developer.role}">{{ unassignedDev.role || 'Click here to assign role' }}</td>
 				</tr>
 			</tbody>
 		</table>

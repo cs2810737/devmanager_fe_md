@@ -142,6 +142,7 @@ angular.module('myApp.projects', ['ngRoute'])
 			$scope.project_name = $scope.project.name
 			$scope.developers = $scope.project.developers
 			$scope.billables = $scope.project.billables
+
 			// console.log(JSON.stringify($scope.developers))
 
 			var allDevIds = []
@@ -169,7 +170,23 @@ angular.module('myApp.projects', ['ngRoute'])
 			}
 
 			for (var i = 0; i < $scope.billables.length; i++) {
-				$scope.billables[i].finalCost = projectDurationInMonths * $scope.billables[i].cost
+				// console.log($scope.billables)
+				var billStartDate = new Date($scope.billables[i].reg_date)
+				var billDurationInMonths = Math.round(Math.abs(today.getTime() - billStartDate.getTime())/oneDay)/daysInMonth
+				$scope.billables[i].finalCost = ($scope.billables[i].recurring ? (billDurationInMonths * $scope.billables[i].cost) : $scope.billables[i].cost)
+				var billablePayments = $scope.project.payments.filter(function(payment){
+					return (payment.billable == $scope.billables[i].id)
+				})
+				// $scope.billables[i].payments = billablePayments
+				var paymentsArray = billablePayments
+				console.log(JSON.stringify(paymentsArray))
+				var paymentAmountsArray = paymentsArray.map(function(payment){
+					return payment.amount
+				})
+				console.log(paymentAmountsArray)
+				$scope.billables[i].amountCleared = paymentAmountsArray.reduce(function(sum, payment){
+					return sum + payment
+				}, 0)
 			}
 
 			// var developers = $scope.developers
@@ -262,13 +279,6 @@ angular.module('myApp.projects', ['ngRoute'])
 									$scope.action_message = 'Cancelled deletion'
 								})
 					}
-				})
-
-			$http.get('$http://localhost:8000/payments/'+ $stateParams.project_id+'/')
-				.then(function(result){
-					console.log('here')
-					$scope.payments = result.data
-					
 				})
 
 			for (var i = 0; i < $scope.billables.length; i++) {
