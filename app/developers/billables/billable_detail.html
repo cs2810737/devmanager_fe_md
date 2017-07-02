@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+<md-dialog ng-controller='BillablesCtrl' layout="column"   ng-cloak>
+    <!-- <md-toolbar >
+            <div class="md-toolbar-tools">
+                <h2 style="text-transform: uppercase;font-family: 'Open Sans Condensed';">Bill Payments</h2>
+            </div>
+    </md-toolbar> -->
+    <md-card>
+        <md-content class="md-no-momentum" layout-align="space-around" layout-padding="layout-padding" style="width: 800px">
+            Bill Payments
+        <md-list-item class="md-3-line" ng-repeat="payment in payments" ng-click="null">
+            <!-- <img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}" /> -->
+            <div class="md-list-item-text" layout="column">
+                <p>date: {{ payment.date_made }}</p>
+                <p>amount: {{ payment.amount }}</p>
+                <p>comment: {{ payment.comment }}</p>
+            </div>
+        </md-list-item>
+        
+      </md-list>
+        </md-content>
+    </md-card>
+    <md-dialog-actions>
+        <md-button class='md-accent md-raised md-hue-2' ng-click='cancel()' md-autofocus>Close</md-button>
+        <md-button class='md-accent md-raised md-hue-2' ng-click="putClient()">Print</md-button>
+    </md-dialog-actions>
+</md-dialog>

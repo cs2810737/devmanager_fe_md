@@ -173,11 +173,11 @@ angular.module('myApp.projects', ['ngRoute'])
 				// console.log($scope.billables)
 				var billStartDate = new Date($scope.billables[i].reg_date)
 				var billDurationInMonths = Math.round(Math.abs(today.getTime() - billStartDate.getTime())/oneDay)/daysInMonth
-				$scope.billables[i].finalCost = ($scope.billables[i].recurring ? (billDurationInMonths * $scope.billables[i].cost) : $scope.billables[i].cost)
+				$scope.billables[i].finalCost = ($scope.billables[i].recurring ? (billDurationInMonths * $scope.billables[i].cost).toFixed(2) : $scope.billables[i].cost.toFixed(2))
 				var billablePayments = $scope.project.payments.filter(function(payment){
 					return (payment.billable == $scope.billables[i].id)
 				})
-				// $scope.billables[i].payments = billablePayments
+				$scope.billables[i].payments = billablePayments
 				var paymentsArray = billablePayments
 				console.log(JSON.stringify(paymentsArray))
 				var paymentAmountsArray = paymentsArray.map(function(payment){
@@ -187,6 +187,7 @@ angular.module('myApp.projects', ['ngRoute'])
 				$scope.billables[i].amountCleared = paymentAmountsArray.reduce(function(sum, payment){
 					return sum + payment
 				}, 0)
+				$scope.billables[i].balance = ($scope.billables[i].amountCleared - $scope.billables[i].finalCost).toFixed(2)
 			}
 
 			// var developers = $scope.developers
@@ -255,7 +256,7 @@ angular.module('myApp.projects', ['ngRoute'])
 						devParticipationInDays = (Math.round(Math.abs(today.getTime() - devStartDate.getTime())/ oneDay) - 1)
 						devParticipationInMonths = devParticipationInDays/daysInMonth
 						$scope.developers[i].daysWorked = devParticipationInDays
-						$scope.developers[i].compensation = $scope.developers[i].monthly_wage * devParticipationInMonths
+						$scope.developers[i].compensation = ($scope.developers[i].monthly_wage * devParticipationInMonths).toFixed(2)
 						grandTotalDevCost = grandTotalDevCost + $scope.developers[i].compensation
 					}
 					$scope.grandTotalDevCost = grandTotalDevCost
@@ -343,7 +344,20 @@ angular.module('myApp.projects', ['ngRoute'])
 		            $scope.status = 'You cancelled the dialog.';
 		        });
 		    }
-
+		    $scope.viewBillDetail = function(ev, billable){
+		    	$mdDialog.show({
+		            controller: ['$scope', 'billable', function($scope, billable){
+		                $scope.billable = billable
+		            }],
+		            templateUrl: 'developers/billables/billable_detail.html',
+		            parent: angular.element(document.body),
+		            targetEvent: ev,
+		            locals: {
+		            	billable: billable
+		            },
+		            clickOutsideToClose:true
+		        })
+		    }
 		    $scope.deleteBillable = function(ev, billable){
 		        var confirm = $mdDialog.confirm()
 					// .title('Are you sure you would you like to delete billable '+billable.name)
@@ -357,8 +371,8 @@ angular.module('myApp.projects', ['ngRoute'])
 					.then(function(){
 						$http.delete('http://localhost:8000/billables/'+ billable.id)
 							.then(function(){
-								$scope.deletion_message = 'Successfully deleted billable '+billable.name
-								$state.go('clients', null, {reload: true})
+								$scope.hide()
+                				$state.go('project_detail', null,{reload: true})
 							})
 						}, function(){
 							$scope.action_message = 'Cancelled deletion'

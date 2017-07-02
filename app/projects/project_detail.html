@@ -97,6 +97,7 @@
 													<th md-column style="color: #FFF">Recurring ?</th>
 													<th md-column style="color: #FFF">Final Cost</th>
 													<th md-column style="color: #FFF">Amount Cleared</th>
+													<th md-column style="color: #FFF">Balance</th>
 												</tr>
 											</thead>
 											<tbody md-body>
@@ -111,10 +112,15 @@
 										
 											        
 											        <td > {{billable.finalCost}} </td>
-											        <td > {{billable.amountCleared}}
+											        <td> {{billable.amountCleared}}</td>
+											        <td > {{billable.balance}}
 											        	<a class="button" ng-click="deleteBillable($event, billable)" style="float: right;">
 											        		<md-tooltip md-direction="bottom">Remove Bill</md-tooltip>
 												            <i class="material-icons">delete</i>
+											        	</a>
+											        	<a class="button" ng-click="viewBillDetail($event, billable)" style="float: right;">
+											        		<md-tooltip md-direction="bottom">View Payments</md-tooltip>
+												            <i class="material-icons">visibility</i>
 											        	</a>
 											        	<a class="button" ng-click="offsetBillable($event, billable)" style="float: right;">
 											        		<md-tooltip md-direction="bottom">Offset Bill</md-tooltip>

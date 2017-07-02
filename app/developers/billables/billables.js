@@ -53,7 +53,7 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
                 $state.go('project_detail', {project_id: $scope.project_id},{reload: true})
             })
     }
-    
+
     $scope.putBillable = function(){
         var data = {
             'name': $scope.name,
@@ -91,8 +91,10 @@ angular.module('myApp.billables', ['ngRoute','ui.router', 'ngMaterial'])
     //         Billables.setData(data.billables)
     //     })
     
-    
-
+    $scope.payments = $scope.billable.payments
+    $scope.cancel = function() {
+        $mdDialog.cancel();
+    };
 	//create a new billable
 	$scope.putBillable = function(form){
 
